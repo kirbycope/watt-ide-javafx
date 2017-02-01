@@ -94,6 +94,7 @@ public class Main extends Application {
 	/**
 	 * Initialize the IDE stage
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initIdeLayout() throws IOException {
 		// Create a new application (Stage) window
 		IDE.ideStage = new Stage();
@@ -227,7 +228,7 @@ public class Main extends Application {
 			// Close Main stage
 	        mainStage.close();
 		}
-		catch (IOException e) { /* e.printStackTrace(); */ }
+		catch (IOException e) { e.printStackTrace(); }
 		// Store the project folder path
 		IDE.projectFolderPath = filePath.replace("\\ProjectSettings.xml", "");
 		// Get TreeView parent

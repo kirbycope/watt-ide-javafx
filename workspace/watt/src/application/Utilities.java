@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.io.PrintWriter;
-
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Comment;
@@ -19,7 +17,6 @@ import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import application.models.TestStep;
-import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
@@ -210,79 +207,6 @@ public class Utilities {
 		finally {
 			/* do nothing */
 		}
-	}
-
-	/**
-	 * Create the HTML string that is the Selenese Test Case
-	 */
-	private static String createHtmlString(String testName, String baseAddress, ObservableList<javafx.scene.Node> testSteps) {
-		String newLine = System.getProperty("line.separator");
-		StringBuilder sb = new StringBuilder();
-		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-		sb.append(newLine);
-		sb.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
-		sb.append(newLine);
-		sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">");
-		sb.append(newLine);
-		sb.append("<head profile=\"http://selenium-ide.openqa.org/profiles/test-case\">");
-		sb.append(newLine);
-		sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-		sb.append(newLine);
-		// Continue writing the HTML file
-		sb.append("<link rel=\"selenium.base\" href=\"" + baseAddress + "\" />");
-		sb.append(newLine);
-		sb.append("<title>" + testName +"</title>");
-		sb.append(newLine);
-		sb.append("</head>");
-		sb.append(newLine);
-		sb.append("<body>");
-		sb.append(newLine);
-		sb.append("<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">");
-		sb.append(newLine);
-		sb.append("<thead>");
-		sb.append(newLine);
-		sb.append("<tr><td rowspan=\"1\" colspan=\"3\">" + testName + "</td></tr>");
-		sb.append(newLine);
-		sb.append("</thead>");
-		sb.append(newLine);
-		sb.append("<tbody>");
-		sb.append(newLine);
-		// Parse each test step in the testSteps list
-		for (int i = 0; i < testSteps.size(); i++)
-		{
-			// Get the Test Step container
-			VBox testStepContainer = (VBox) testSteps.get(i);
-			TestStep testStep = GetTestStepDetails(testStepContainer);
-			// Add the Description
-			sb.append("	<!--" + testStep.Description + "-->");
-			sb.append(newLine);
-			// Add the table row // <tr data-continueOnFailure="true" data-execute="true">
-			sb.append("<tr data-continueOnFailure=\""+ testStep.ContinueOnFailure + "\" data-execute=\"" + testStep.ExecuteStep + "\">");
-			sb.append(newLine);
-			// Add the Command
-			sb.append("	<td>" + testStep.Command + "</td>");
-			sb.append(newLine);
-			// Add the Target
-			sb.append("	<td>" + testStep.Target + "</td>");
-			sb.append(newLine);
-			// Get the Value
-			sb.append("	<td>" + testStep.Value + "</td>");
-			sb.append(newLine);
-			// End the table row
-			sb.append("</tr>");
-			sb.append(newLine);
-		}
-		// Finish the HTML file
-		sb.append("</tbody>");
-		sb.append(newLine);
-		sb.append("</table>");
-		sb.append(newLine);
-		sb.append("</body>");
-		sb.append(newLine);
-		sb.append("</html>");
-		sb.append(newLine);
-		// Return the completed HTML string
-		return sb.toString();
 	}
 
 	/**

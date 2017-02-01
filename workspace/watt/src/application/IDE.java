@@ -44,16 +44,16 @@ public class IDE {
 		// Get the source of the event
 		Label source = (Label) mouseEvent.getSource();
 		// Handle source state
-		if (source.getText().equals("➖")) {
+		if (source.getText().equals("âž–")) {
 			UiHelpers.GetConsoleTextAreaNode().setManaged(false);
 			UiHelpers.GetConsoleTextAreaNode().setVisible(false);
-			source.setText("➕");
+			source.setText("âž•");
 			source.setTooltip(new Tooltip("Expand console"));
 		}
 		else {
 			UiHelpers.GetConsoleTextAreaNode().setManaged(true);
 			UiHelpers.GetConsoleTextAreaNode().setVisible(true);
-			source.setText("➖");
+			source.setText("âž–");
 			source.setTooltip(new Tooltip("Collapse console"));
 		}
 	}
@@ -253,7 +253,7 @@ public class IDE {
 	public static void AddTab(String name) {
 		// Add only if it is a document
 		if (name.contains("🗋 ")) {
-			// Trim "🗋  " from name
+			// Trim "🗋 " from name
 			name = name.substring(2);
 			// Get TabPane
 			TabPane tabPane = (TabPane) ideStage.getScene().lookup("#tab-pane");
