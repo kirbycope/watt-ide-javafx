@@ -1,0 +1,38 @@
+.ide-wrapper {
+	-fx-background-color: #2D2D30;
+}
+
+.toolbar-parent {
+	-fx-background-color: #2D2D30;
+}
+
+.toolbar-label {
+	-fx-font-size: 2em;
+}
+
+.toolbar-label:hover {
+	-fx-background-color: #3F3F46;
+}
+
+.console-header-wrapper, .project-explorer-label-wrapper, .test-step-builder-label-wrapper {
+	-fx-background-color: #3F3F46;
+}
+
+.tab-pane-parent {
+	-fx-background-color: #2D2D30;
+	-fx-border-color: #3F3F46;
+}
+
+.test-step-builder-parent {
+	-fx-border-color: #3F3F46;
+}
+
+.console-parent {
+	-fx-background-color: #2D2D30;
+	-fx-border-color: #3F3F46;
+}
+
+#tree-view-parent {
+	-fx-background-color: #2D2D30;
+	-fx-border-color: #3F3F46;
+}

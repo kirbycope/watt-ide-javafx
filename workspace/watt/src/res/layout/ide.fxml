@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="600.0" prefWidth="800.0" styleClass="ide-wrapper" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.IDE">
+   <children>
+      <HBox styleClass="toolbar-parent">
+         <children>
+            <Label styleClass="toolbar-label" text="🗋">
+               <tooltip>
+                  <Tooltip text="New" />
+               </tooltip>
+               <padding>
+                  <Insets left="4.0" right="2.0" />
+               </padding>
+            </Label>
+            <Label styleClass="toolbar-label" text="🗀">
+               <tooltip>
+                  <Tooltip text="Open" />
+               </tooltip>
+               <padding>
+                  <Insets left="2.0" right="2.0" />
+               </padding>
+            </Label>
+            <Label styleClass="toolbar-label" text="🖫">
+               <tooltip>
+                  <Tooltip text="Save" />
+               </tooltip>
+               <padding>
+                  <Insets left="2.0" right="2.0" />
+               </padding>
+            </Label>
+            <Separator orientation="VERTICAL">
+               <padding>
+                  <Insets left="2.0" right="2.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="2.0" top="2.0" />
+               </HBox.margin>
+            </Separator>
+            <Label disable="true" styleClass="toolbar-label" text="⚪">
+               <tooltip>
+                  <Tooltip text="Record" />
+               </tooltip>
+               <padding>
+                  <Insets left="2.0" right="2.0" />
+               </padding></Label>
+            <Label id="toolbar-play" onMouseClicked="#Play" styleClass="toolbar-label" text="▷">
+               <tooltip>
+                  <Tooltip text="Play" />
+               </tooltip>
+               <HBox.margin>
+                  <Insets left="2.0" right="2.0" />
+               </HBox.margin></Label>
+            <Label disable="true" styleClass="toolbar-label" text="◻">
+               <tooltip>
+                  <Tooltip text="Stop" />
+               </tooltip>
+               <HBox.margin>
+                  <Insets left="2.0" right="2.0" />
+               </HBox.margin></Label>
+            <Pane HBox.hgrow="ALWAYS" />
+            <Label onMouseClicked="#Settings" styleClass="toolbar-label" text="⚙">
+               <tooltip>
+                  <Tooltip text="Settings" />
+               </tooltip>
+               <padding>
+                  <Insets right="4.0" />
+               </padding>
+            </Label>
+         </children></HBox>
+      <HBox VBox.vgrow="ALWAYS">
+         <children>
+            <VBox id="tree-view-parent" prefWidth="200.0">
+               <children>
+                  <HBox styleClass="project-explorer-label-wrapper">
+                     <children>
+                        <Label text="Project Explorer" HBox.hgrow="ALWAYS">
+                           <padding>
+                              <Insets left="4.0" />
+                           </padding>
+                         </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="2.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </VBox>
+            <VBox styleClass="tab-pane-parent" HBox.hgrow="ALWAYS">
+               <children>
+                  <TabPane id="tab-pane" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />
+               </children>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox prefWidth="200.0" styleClass="test-step-builder-parent">
+               <children>
+                  <HBox styleClass="test-step-builder-label-wrapper">
+                     <children>
+                        <Label text="Test Step Builder">
+                           <padding>
+                              <Insets left="4.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="2.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <TextField id="test-step-builder-description" promptText="Description" />
+                  <ComboBox id="test-step-builder-command" maxWidth="1.7976931348623157E308" promptText="Command" />
+                  <TextField id="test-step-builder-target" maxWidth="1.7976931348623157E308" promptText="Target" />
+                  <TextField id="test-step-builder-value" maxWidth="1.7976931348623157E308" promptText="Value" />
+                  <HBox>
+                     <children>
+                        <Button onMouseClicked="#TestStepBuilderAdd" text="Add Step" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Button onMouseClicked="#TestStepBuilderClear" text="Clear Form" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label text="Reference">
+                           <padding>
+                              <Insets left="4.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets top="4.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="2.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <TextArea disable="true" editable="false" focusTraversable="false" wrapText="true" VBox.vgrow="ALWAYS" />
+               </children>
+               <HBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox>
+         <children>
+            <VBox styleClass="console-parent" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+               <HBox styleClass="console-header-wrapper">
+                  <children>
+                     <Label text="Console">
+                        <padding>
+                           <Insets left="4.0" />
+                        </padding></Label>
+                     <Pane HBox.hgrow="ALWAYS" />
+                     <Label onMouseClicked="#ExpandCollapseConsole" text="➖">
+                        <tooltip>
+                           <Tooltip text="Collapse console" />
+                        </tooltip>
+                        <HBox.margin>
+                           <Insets right="2.0" />
+                        </HBox.margin>
+                     </Label>
+                     <Label onMouseClicked="#ClearConsole" text="❌">
+                        <tooltip>
+                           <Tooltip text="Clear console" />
+                        </tooltip>
+                        <HBox.margin>
+                           <Insets left="2.0" right="4.0" />
+                        </HBox.margin>
+                     </Label>
+                  </children>
+                  <VBox.margin>
+                     <Insets left="2.0" />
+                  </VBox.margin>
+                  <padding>
+                     <Insets bottom="2.0" />
+                  </padding>
+               </HBox>
+            	<TextArea id="console-text-area" editable="false" wrapText="true" />
+               <HBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@../style/base.css" />
+      <URL value="@../style/ide.css" />
+   </stylesheets>
+</VBox>

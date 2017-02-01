@@ -1,0 +1,19 @@
+.banner {
+	-fx-background-color: #f6f6f6;
+	-fx-border-width: 0px 0px 1px 0px;
+	-fx-border-style: solid;
+	-fx-border-color: #c8c8c8;
+}
+
+.label-first {
+	-fx-font-size: 1.25em;
+	-fx-font-weight: bold;
+}
+
+.label-item:hover {
+	-fx-text-fill: blue;
+}
+
+.parent {
+	-fx-background-color: #ffffff;
+}

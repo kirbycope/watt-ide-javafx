@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:controller="application.Main" minHeight="300" minWidth="730" styleClass="parent" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<HBox minHeight="75" styleClass="banner" />
+		<HBox HBox.hgrow="ALWAYS">
+			<children>
+			<VBox minWidth="365">
+				<children>
+					<Label styleClass="label-first" text="Recent Projects:" />
+					<Label styleClass="label-item" text="Example 01" />
+				</children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets left="12.0" top="12.0" />
+               </padding>
+			</VBox>
+            <Separator minHeight="225.0" orientation="VERTICAL">
+               <padding>
+                  <Insets bottom="60.0" top="12.0" />
+               </padding>
+            </Separator>
+			<VBox minWidth="365">
+				<children>
+					<Label styleClass="label-first" text="Actions:" />
+					<Label onMouseClicked="#newProject" styleClass="label-item" text="Start new project" />
+					<Label onMouseClicked="#openProject" styleClass="label-item" text="Open existing project" />
+				</children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets left="12.0" top="12.0" />
+               </padding>
+			</VBox>
+			</children>
+		</HBox>
+	</children>
+</VBox>
