@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
@@ -19,7 +18,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Document;
@@ -42,49 +40,6 @@ import javafx.scene.layout.VBox;
 public class Utilities {
 
 	/**
-	 * Creates a "Demo" project
-	 */
-	public static org.w3c.dom.Document CreateDemo(org.w3c.dom.Document doc, String folderPath) {
-		// Get the <root> element of the Document
-		org.w3c.dom.Element root = doc.getDocumentElement();
-		// Create a "Demo" test case element in the ProjectSettings.xml
-		org.w3c.dom.Element demoTestCase = doc.createElement("file");
-	    demoTestCase.setAttribute("name", "TestCase01");
-	    root.appendChild(demoTestCase);
-
-	    // Create a "Demo" test step element as a child of the "Demo" test case
-	    org.w3c.dom.Element demoTestStep = doc.createElement("test-step");
-	    demoTestStep.setAttribute("name", "TestStep01");
-	    demoTestCase.appendChild(demoTestStep);
-	    // Create a matching HTML file in the project's folder
-	    CreateDemoFile("/demo/TestCase01.html", folderPath + "TestCase01.html");
-	    // Create a matching JAVA file in the project's folder
-	    CreateDemoFile("/demo/TestCase01.txt", folderPath + "TestCase01.java");
-
-	    /* DEPENDENCIES */
-	    CreateDemoFile("/demo/TestBase.txt", folderPath + "TestBase.java");
-	    CreateDemoFile("/demo/client-combined-3.0.1-nodeps.jar", folderPath + "client-combined-3.0.1-nodeps.jar");
-	    CreateDemoFile("/demo/hamcrest-core-1.3.jar", folderPath + "hamcrest-core-1.3.jar");
-	    CreateDemoFile("/demo/junit-4.12.jar", folderPath + "junit-4.12.jar");
-	    CreateDemoFile("/demo/selenium-server-standalone-3.0.1.jar", folderPath + "selenium-server-standalone-3.0.1.jar");
-	    CreateDemoFile("/demo/compile-script.bat", folderPath + "compile-script.bat");
-	    // Create "Compile" script
-	    CreateTxtFileFromString("cd " + folderPath
-	    		+ System.lineSeparator()
-	    		+ "javac -cp *; TestBase.java TestCase01.java"
-	    		, folderPath + "compile-script.bat");
-	    // Create "Run" script
-	    CreateTxtFileFromString("cd " + folderPath
-	    		+ System.lineSeparator()
-	    		+ "cd.."
-	    		+ System.lineSeparator()
-	    		+ "java -cp demo\\*; org.junit.runner.JUnitCore demo.TestCase01"
-	    		, folderPath + "run-script.bat");
-	    // Return the modified Document
-	    return doc;
-	}
-
-	/**
 	 * Creates a .txt file at the specified location with the given content
 	 */
 	public static void CreateTxtFileFromString(String content, String destination) {
@@ -92,17 +47,6 @@ public class Utilities {
 			ps.println(content);
 		}
 		catch (FileNotFoundException e) { e.printStackTrace(); }
-	}
-
-	/**
-	 * Creates a file needed for the Demo project
-	 */
-	public static void CreateDemoFile(String origin, String destination) {
-		// Load the contents of the source file into a FileStream
-        InputStream inputStream = Utilities.class.getResourceAsStream(origin); // "/demo/TestCase01.txt"
-        // Save the FileStream as a File
-        try { FileUtils.copyInputStreamToFile(inputStream, new File(destination)); }
-        catch (IOException e) { e.printStackTrace(); }
 	}
 
 	/**

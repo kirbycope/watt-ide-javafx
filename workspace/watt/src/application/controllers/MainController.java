@@ -31,8 +31,9 @@ public class MainController {
 	public void newProject(MouseEvent e) throws IOException {
 		// Ask where to save project
 		String filePath = showNewProjectPrompt();
+
 		// Handle response
-		if (filePath.length() > 0) {
+		if (filePath.length() > 19) {
 			// Get the Main stage
 	        Label source = (Label) e.getSource();
 			Stage mainStage = (Stage) source.getScene().getWindow();
@@ -127,7 +128,7 @@ public class MainController {
 	 */
 	public static String showNewProjectPrompt() {
 		// Create the dialog prompt
-		TextInputDialog dialog = new TextInputDialog("C:\\WATT\\Demo\\");
+		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle("Choose Project Location");
 		dialog.setHeaderText("Select a location to store your project");
 		dialog.setContentText("Location: ");
@@ -151,14 +152,7 @@ public class MainController {
 		    org.w3c.dom.Document doc = Utilities.CreateDocument();
 		    // Create the root element node
 		    org.w3c.dom.Element root = doc.createElement("root");
-		    doc.appendChild(root);
-
-		    /********************************************/
-		    // DEBUGGING - Create a DEMO project
-		    doc = Utilities.CreateDemo(doc, resultString);
-		    /********************************************/
-
-		    // Write the Document to an XML File at the specified location
+		    doc.appendChild(root);// Write the Document to an XML File at the specified location
 		    Utilities.writeDocumentToFile(doc, new File(resultString + "ProjectSettings.xml"));
 		}
 		return resultString + "ProjectSettings.xml";
