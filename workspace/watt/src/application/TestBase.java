@@ -13,7 +13,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 public class TestBase {
 
 	protected WebDriver driver;
-	protected String baseUrl = "http://timothycope.com/";
+	protected String baseUrl = "";
 	protected String hubUrl = "http://localhost:4444/wd/hub";
 
 	@Before

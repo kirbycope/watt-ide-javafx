@@ -46,16 +46,16 @@ public class IdeController {
 		// Get the source of the event
 		Label source = (Label) mouseEvent.getSource();
 		// Handle source state
-		if (source.getText().equals("âž–")) {
+		if (source.getText().equals("➖")) {
 			UiHelpers.GetConsoleTextAreaNode().setManaged(false);
 			UiHelpers.GetConsoleTextAreaNode().setVisible(false);
-			source.setText("âž•");
+			source.setText("➕");
 			source.setTooltip(new Tooltip("Expand console"));
 		}
 		else {
 			UiHelpers.GetConsoleTextAreaNode().setManaged(true);
 			UiHelpers.GetConsoleTextAreaNode().setVisible(true);
-			source.setText("âž–");
+			source.setText("➖");
 			source.setTooltip(new Tooltip("Collapse console"));
 		}
 	}
@@ -119,7 +119,6 @@ public class IdeController {
 	}
 
 	/* -------- OTHER METHODS -------- */
-
 
 	/**
 	 * Adds a Test Step to the currently 'selected' Tab
@@ -302,7 +301,7 @@ public class IdeController {
 				scrollPane.setContent(testStepsContainer);
 				/* Add any/all Test Steps to the Tab*/
 				// Get the XML Document
-				Document doc = MainController.loadProjectSettingsFile(IDE.projectFolderPath + "\\ProjectSettings.xml");
+				Document doc = Utilities.LoadDocumentFromFilePath(IDE.projectFolderPath + "\\ProjectSettings.xml");
 				// Get the "file" node whose name attribute matches the Tab's title
 				org.w3c.dom.Node fileNode = getFileNodeForCurrentTab(tab, doc);
 				// Parse only if there was a matching <file> node

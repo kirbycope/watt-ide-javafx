@@ -8,6 +8,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Comment;
@@ -15,6 +26,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import org.xml.sax.SAXException;
 
 import application.controllers.IdeController;
 import application.models.TestStep;
@@ -72,6 +84,9 @@ public class Utilities {
 	    return doc;
 	}
 
+	/**
+	 * Creates a .txt file at the specified location with the given content
+	 */
 	public static void CreateTxtFileFromString(String content, String destination) {
 		try ( PrintStream ps = new PrintStream(destination) ) {
 			ps.println(content);
@@ -80,9 +95,7 @@ public class Utilities {
 	}
 
 	/**
-	 *
-	 * @param origin The source code file path
-	 * @param destination The destination file path
+	 * Creates a file needed for the Demo project
 	 */
 	public static void CreateDemoFile(String origin, String destination) {
 		// Load the contents of the source file into a FileStream
@@ -93,6 +106,19 @@ public class Utilities {
 	}
 
 	/**
+	 * Creates a new instance of a [org.w3c.dom.]Document
+	 */
+	public static org.w3c.dom.Document CreateDocument() {
+		// Create a new Document
+	    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	    DocumentBuilder builder = null;
+		try { builder = dbf.newDocumentBuilder(); }
+		catch (ParserConfigurationException e1) { e1.printStackTrace();	}
+	    org.w3c.dom.Document doc = builder.newDocument();
+		return doc;
+	}
+
+	/**
 	 * Gets the currently selected Tab
 	 */
 	public static Tab GetCurrentTab() {
@@ -100,6 +126,26 @@ public class Utilities {
 		TabPane tabPane = (TabPane) IDE.ideStage.getScene().lookup("#tab-pane");
 		// Get/Record the selected Tab
 		return tabPane.getSelectionModel().getSelectedItem();
+	}
+
+	/**
+	 * Gets the current OS
+	 */
+	public static String GetOS() {
+		// Get the OS name
+		String osName = System.getProperty("os.name");
+		if (osName.toLowerCase().contains("")) {
+			return "windows";
+		}
+		else if (osName.toLowerCase().contains("mac")) {
+			return "osx";
+		}
+		else if (osName.toLowerCase().contains("nux")) {
+			return "linux";
+		}
+		else {
+			return "unknown";
+		}
 	}
 
 	/**
@@ -138,6 +184,22 @@ public class Utilities {
 	 */
 	public static String getXmlNodeAttribute(org.w3c.dom.Node item, String attribute){
 		return ((org.w3c.dom.Node) item).getAttributes().getNamedItem(attribute).getNodeValue();
+	}
+
+	/**
+	 * Loads a [XML] Document into memory from the given file path
+	 */
+	public static org.w3c.dom.Document LoadDocumentFromFilePath(String filePath) {
+		File file = new File(filePath);
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = null;
+		try { dBuilder = dbFactory.newDocumentBuilder(); }
+		catch (ParserConfigurationException e) { e.printStackTrace(); }
+		org.w3c.dom.Document doc = null;
+		try { doc = dBuilder.parse(file); }
+		catch (SAXException e) { e.printStackTrace(); }
+		catch (IOException e) { e.printStackTrace(); }
+		return doc;
 	}
 
 	/**
@@ -241,4 +303,23 @@ public class Utilities {
 			}
 		}).start();
 	}
+
+	/**
+	 * Writes the Document object to a file
+	 */
+	public static void writeDocumentToFile(org.w3c.dom.Document document, File file) {
+        // Make a transformer factory to create the Transformer
+        TransformerFactory tFactory = TransformerFactory.newInstance();
+        // Make the Transformer
+        Transformer transformer = null;
+		try { transformer = tFactory.newTransformer(); }
+		catch (TransformerConfigurationException e) { e.printStackTrace(); }
+        // Mark the document as a DOM (XML) source
+        DOMSource source = new DOMSource(document);
+        // Say where we want the XML to go
+        StreamResult result = new StreamResult(file);
+        // Write the XML to file
+        try { transformer.transform(source, result); }
+        catch (TransformerException e) { e.printStackTrace(); }
+    }
 }

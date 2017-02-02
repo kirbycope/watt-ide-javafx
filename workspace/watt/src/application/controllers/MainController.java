@@ -4,22 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import application.IDE;
 import application.Main;
+import application.Settings;
 import application.UiHelpers;
 import application.Utilities;
 import javafx.event.EventHandler;
@@ -74,6 +63,8 @@ public class MainController {
 	 * Load the Project into the IDE Stage
 	 */
 	public static void loadProject(Stage mainStage, String filePath) {
+		// Set the last opened project
+		Settings.SetLastOpenedProject(filePath);
 		// Open IDE window
 		try {
 			// Initialize the IDE stage
@@ -97,7 +88,7 @@ public class MainController {
 		// Add the root TreeItem to the TreeView
 		tv.setRoot(ti);
 		// Load Projects Settings XML file
-		Document doc = loadProjectSettingsFile(filePath);
+		Document doc = Utilities.LoadDocumentFromFilePath(filePath);
 		// Parse the XML document if there is one to parse
 		if (doc != null) {
 			// Get the child Node(s) of the root element
@@ -132,22 +123,6 @@ public class MainController {
 	}
 
 	/**
-	 * Load the ProjectSettings.xml file into an Object
-	 */
-	public static Document loadProjectSettingsFile(String filePath) {
-		File file = new File(filePath);
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = null;
-		try { dBuilder = dbFactory.newDocumentBuilder(); }
-		catch (ParserConfigurationException e) { e.printStackTrace(); }
-		Document doc = null;
-		try { doc = dBuilder.parse(file); }
-		catch (SAXException e) { e.printStackTrace(); }
-		catch (IOException e) { e.printStackTrace(); }
-		return doc;
-	}
-
-	/**
 	 * Shows the "New Project" dialog
 	 */
 	public static String showNewProjectPrompt() {
@@ -163,34 +138,39 @@ public class MainController {
 		// Show the prompt and wait for a user response
 		Optional<String> result = dialog.showAndWait();
 		// Handle the response
+		String resultString = "";
 		if ( (result.isPresent()) && (result.get().length() > 0) ) {
+			// Handle path ending with a trailing slash or not
+			if (result.get().endsWith("\\")) {
+				resultString = result.get();
+		    }
+		    else {
+		    	resultString = result.get() + "\\";
+		    }
 	    	// Create a new Document to hold the project settings
-		    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		    DocumentBuilder builder = null;
-			try { builder = dbf.newDocumentBuilder(); }
-			catch (ParserConfigurationException e1) { e1.printStackTrace();	}
-		    Document doc = builder.newDocument();
+		    org.w3c.dom.Document doc = Utilities.CreateDocument();
 		    // Create the root element node
-		    Element root = doc.createElement("root");
+		    org.w3c.dom.Element root = doc.createElement("root");
 		    doc.appendChild(root);
 
 		    /********************************************/
 		    // DEBUGGING - Create a DEMO project
-		    doc = Utilities.CreateDemo(doc, result.get());
+		    doc = Utilities.CreateDemo(doc, resultString);
 		    /********************************************/
 
 		    // Write the Document to an XML File at the specified location
-		    try { writeDocumentToFile(doc, new File(result.get() + "ProjectSettings.xml")); }
-		    catch (TransformerException e2) { e2.printStackTrace(); }
+		    Utilities.writeDocumentToFile(doc, new File(resultString + "ProjectSettings.xml"));
 		}
-		return result.get() + "ProjectSettings.xml";
+		return resultString + "ProjectSettings.xml";
 	}
 
 	/**
 	 * Shows the "Open Project" dialog
 	 */
 	public static String showOpenProjectPrompt() {
-		TextInputDialog dialog = new TextInputDialog("C:\\WATT\\Demo\\ProjectSettings.xml");
+		// Get the last opened project
+		String filePath = Settings.GetLastOpenedProject();
+		TextInputDialog dialog = new TextInputDialog(filePath);
 		dialog.setTitle("Choose Project Location");
 		dialog.setHeaderText("Select a location to store your project");
 		dialog.setContentText("Location: ");
@@ -200,22 +180,11 @@ public class MainController {
 		stage.getIcons().add(new Image(Main.class.getResourceAsStream("/res/drawable/icon.png")));
 		// Traditional way to get the response value.
 		Optional<String> result = dialog.showAndWait();
-		return result.get();
+		// Handle the response
+		String resultString = "";
+		if ( (result.isPresent()) && (result.get().length() > 0) ) {
+			resultString = result.get();
+		}
+		return resultString;
 	}
-
-	/**
-	 * Writes the Document object to a file
-	 */
-	public static void writeDocumentToFile(Document document, File file) throws TransformerException {
-        // Make a transformer factory to create the Transformer
-        TransformerFactory tFactory = TransformerFactory.newInstance();
-        // Make the Transformer
-        Transformer transformer = tFactory.newTransformer();
-        // Mark the document as a DOM (XML) source
-        DOMSource source = new DOMSource(document);
-        // Say where we want the XML to go
-        StreamResult result = new StreamResult(file);
-        // Write the XML to file
-        transformer.transform(source, result);
-    }
 }

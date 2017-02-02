@@ -14,7 +14,6 @@ public class IDE {
 	public static String projectFolderPath;
 	public static String baseAddress;
 
-
 	/**
 	 * Initialize the IDE stage
 	 */
