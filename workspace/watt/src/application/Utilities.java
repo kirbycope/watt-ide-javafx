@@ -16,6 +16,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
+import application.controllers.IdeController;
 import application.models.TestStep;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -133,6 +134,13 @@ public class Utilities {
 	}
 
 	/**
+	 * Gets the attribute of the XML Node
+	 */
+	public static String getXmlNodeAttribute(org.w3c.dom.Node item, String attribute){
+		return ((org.w3c.dom.Node) item).getAttributes().getNamedItem(attribute).getNodeValue();
+	}
+
+	/**
 	 * Load the HTML file and each Test Step to the 'selected' Tab
 	 */
 	public static void LoadSeleneseHtmlFile(String filePath) {
@@ -195,7 +203,7 @@ public class Utilities {
 					else if (i==5) { value = ((Element) childNode).text(); }
 				}
 				// Finally, Add the test step to the Test Steps Pane
-				IDE.AddStep(execute, description, command, target, value, continueOnFailure);
+				IdeController.AddStep(execute, description, command, target, value, continueOnFailure);
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

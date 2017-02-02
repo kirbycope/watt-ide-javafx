@@ -8,7 +8,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:controller="application.Main" minHeight="300" minWidth="730" styleClass="parent" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:controller="application.controllers.MainController" minHeight="300" minWidth="730" styleClass="parent" stylesheets="@../style/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<HBox minHeight="75" styleClass="banner" />
 		<HBox HBox.hgrow="ALWAYS">
