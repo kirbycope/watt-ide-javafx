@@ -5,6 +5,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 public class UiHelpers {
 
@@ -44,9 +45,6 @@ public class UiHelpers {
 		return (TextField) IDE.ideStage.getScene().lookup("#test-step-builder-value");
 	}
 
-	/**
-	 * Get the Test Step Builder's Description (TextField) Node
-	 */
 	public static ContextMenu GetFolderContextMenu() {
 		ContextMenu contextMenu = new ContextMenu();
 		MenuItem mi1 = new MenuItem("New Test Case");
@@ -55,5 +53,12 @@ public class UiHelpers {
 		contextMenu.getItems().add(mi2);
 
 		return contextMenu;
+	}
+
+	/**
+	 * Gets the Test Step Builder's Reference wrapper
+	 */
+	public static VBox GetReferenceWrapperNode() {
+		return (VBox) IDE.ideStage.getScene().lookup("#reference-wrapper");
 	}
 }

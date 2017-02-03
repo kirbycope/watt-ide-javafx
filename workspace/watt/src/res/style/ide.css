@@ -14,7 +14,9 @@
 	-fx-background-color: #3F3F46;
 }
 
-.console-header-wrapper, .project-explorer-label-wrapper, .test-step-builder-label-wrapper {
+.console-header-wrapper,
+.project-explorer-label-wrapper,
+.test-step-builder-label-wrapper {
 	-fx-background-color: #3F3F46;
 }
 
@@ -32,7 +34,25 @@
 	-fx-border-color: #3F3F46;
 }
 
+#reference-wrapper {
+	-fx-background-color: #252526;
+	-fx-text-fill: #FFFFFF;
+}
+
 #tree-view-parent {
 	-fx-background-color: #2D2D30;
 	-fx-border-color: #3F3F46;
+}
+
+#console-text-area
+, #console-text-area .content
+, #console-text-area:focused .content
+, #console-text-area:hover .content
+{
+	-fx-background-color: #252526;
+	-fx-background-insets: 0;
+	-fx-faint-focus-color: transparent;
+	-fx-focus-color: transparent;
+	-fx-text-box-border: none;
+	-fx-text-fill: #FFFFFF;
 }

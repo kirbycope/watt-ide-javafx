@@ -476,6 +476,8 @@ public class IdeController {
 		UiHelpers.GetTestStepBuilderTargetNode().clear();
 		// Clear the Value
 		UiHelpers.GetTestStepBuilderTargetNode().clear();
+		// Clear the Reference
+		UiHelpers.GetReferenceWrapperNode().getChildren().clear();
 	}
 
 }

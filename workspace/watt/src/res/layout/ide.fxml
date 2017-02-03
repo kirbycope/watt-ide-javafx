@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:controller="application.controllers.IdeController" prefHeight="600.0" prefWidth="800.0" styleClass="ide-wrapper" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600.0" prefWidth="800.0" styleClass="ide-wrapper" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.IdeController">
    <children>
       <HBox styleClass="toolbar-parent">
          <children>
@@ -156,7 +156,14 @@
                         <Insets bottom="2.0" />
                      </VBox.margin>
                   </HBox>
-                  <TextArea disable="true" editable="false" focusTraversable="false" wrapText="true" VBox.vgrow="ALWAYS" />
+                  <VBox id="reference-wrapper" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                     </padding>
+                  </VBox>
                </children>
                <HBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

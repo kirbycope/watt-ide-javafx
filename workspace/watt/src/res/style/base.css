@@ -84,8 +84,6 @@
    -fx-background-color: #2D2D30;
 }
 
-
-
 .tab-header-background {
 	-fx-background-color: #2D2D30;
 }
@@ -120,17 +118,16 @@
 	-fx-text-fill: #FFFFFF;
 }
 
-.text-area .content:hover {
-	-fx-background-color: #3F3F46;
-}
-
-.text-area .content {
-	-fx-background-color:  #252526;
-}
-
 .text-area:focused .content {
     -fx-background-color: #3F3F46;
     -fx-border-color: #007ACC;
+}
+
+.text-area .content {
+	-fx-background-color: #252526;
+}
+.text-area .content:hover {
+	-fx-background-color: #3F3F46;
 }
 
 .text-field {
