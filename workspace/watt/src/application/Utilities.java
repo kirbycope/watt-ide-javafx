@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
@@ -18,6 +19,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Document;
@@ -131,10 +133,9 @@ public class Utilities {
 	}
 
 	/**
-	 * Loads a [XML] Document into memory from the given file path
+	 * Loads a [XML] Document into memory using the given File in memory
 	 */
-	public static org.w3c.dom.Document LoadDocumentFromFilePath(String filePath) {
-		File file = new File(filePath);
+	private static org.w3c.dom.Document LoadDocumentFromFileObject(File file) {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = null;
 		try { dBuilder = dbFactory.newDocumentBuilder(); }
@@ -144,6 +145,27 @@ public class Utilities {
 		catch (SAXException e) { e.printStackTrace(); }
 		catch (IOException e) { e.printStackTrace(); }
 		return doc;
+	}
+
+	/**
+	 * Loads a [XML] Document into memory from the given file path
+	 */
+	public static org.w3c.dom.Document LoadDocumentFromFilePath(String filePath) {
+		File file = new File(filePath);
+		return LoadDocumentFromFileObject(file);
+	}
+
+	/**
+	 * Loads a [XML] Document into memory from the given resource (source code) file
+	 */
+	public static org.w3c.dom.Document LoadDocumentFromResource(String resourcePath) {
+		File file = null;
+		try { file = File.createTempFile("temp-file-name", ".tmp"); }
+		catch (IOException e1) { e1.printStackTrace(); }
+		InputStream inputStream = Main.class.getResourceAsStream(resourcePath);
+		try { FileUtils.copyInputStreamToFile(inputStream, file); }
+		catch (IOException e2) { e2.printStackTrace(); }
+		return LoadDocumentFromFileObject(file);
 	}
 
 	/**

@@ -73,7 +73,7 @@ public class Settings {
 		// Create a child node for <lastProject value="{path}">
 		org.w3c.dom.Element lastProjectNode = settingsFile.createElement("lastProject");
 		lastProjectNode.setAttribute("value", path);
-	    root.appendChild(lastProjectNode);;
+	    root.appendChild(lastProjectNode);
 	    // Save document to disk
 	    Utilities.writeDocumentToFile(settingsFile, new File(settingsFilePath));
 	}

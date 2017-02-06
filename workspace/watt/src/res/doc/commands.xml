@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<command value="click">
+		<commandArgument value="click(locator)" />
+		<arguments>
+			<argument value="locator - an element locator"/>
+		</arguments>
+		<description value="Clicks on a link, button, checkbox or radio button. If the click action causes a new page to load (like a link usually does), call waitForPageToLoad."/>
+	</command>
+	<command value="clickAndWait">
+		<commandArgument value="clickAndWait(locator)" />
+		<arguments>
+			<argument value="locator - an element locator"/>
+		</arguments>
+		<description value="Clicks on a link, button, checkbox or radio button. If the click action causes a new page to load (like a link usually does), call waitForPageToLoad."/>
+	</command>
+	<command value="deleteAllVisibleCookies">
+		<commandArgument value="deleteAllVisibleCookies()" />
+		<arguments />
+		<description value="Calls deleteCookie with recurse=true on all cookies visible to the current page. As noted on the documentation for deleteCookie, recurse=true can be much slower than simply deleting the cookies using a known domain/path."/>
+	</command>
+	<command value="echo">
+		<commandArgument value="echo(message)" />
+		<arguments>
+			<argument value="message - the message to print"/>
+		</arguments>
+		<description value="Prints the specified message into the third table cell in your Selenese tables. Useful for debugging."/>
+	</command>
+	<command value="goBack">
+		<commandArgument value="goBack()" />
+		<arguments />
+		<description value="Simulates the user clicking the 'back' button on their browser."/>
+	</command>
+	<command value="goBackAndWait">
+		<commandArgument value="goBackAndWait()" />
+		<arguments />
+		<description value="Simulates the user clicking the 'back' button on their browser."/>
+	</command>
+	<command value="goForward">
+		<commandArgument value="goForward()" />
+		<arguments />
+		<description value="Simulates the user clicking the 'forward' button on their browser."/>
+	</command>
+	<command value="goForwardAndWait">
+		<commandArgument value="goForwardAndWait()" />
+		<arguments />
+		<description value="Simulates the user clicking the 'forward' button on their browser."/>
+	</command>
+	<command value="open">
+		<commandArgument value="open(url)" />
+		<arguments>
+			<argument value="url - the URL to open; may be relative or absolute"/>
+		</arguments>
+		<description value="Opens an URL in the test frame. This accepts both relative and absolute URLs. The 'open' command waits for the page to load before proceeding, ie. the 'AndWait' suffix is implicit. Note: The URL must be on the same domain as the runner HTML due to security restrictions in the browser (Same Origin Policy). If you need to open an URL on another domain, use the Selenium Server to start a new browser session on that domain."/>
+	</command>
+	<command value="pause">
+		<commandArgument value="pause(waitTime)" />
+		<arguments>
+			<argument value="waitTime - the amount of time to sleep (in milliseconds)"/>
+		</arguments>
+		<description value="Wait for the specified amount of time (in milliseconds)"/>
+	</command>
+	<command value="refresh">
+		<commandArgument value="refresh()" />
+		<arguments />
+		<description value="Simulates the user clicking the 'Refresh' button on their browser."/>
+	</command>
+	<command value="refreshAndWait">
+		<commandArgument value="refreshAndWait()" />
+		<arguments />
+		<description value="Simulates the user clicking the 'Refresh' button on their browser."/>
+	</command>
+	<command value="runScript">
+		<commandArgument value="runScript(script)" />
+		<arguments>
+			<argument value="script - the JavaScript snippet to run"/>
+		</arguments>
+		<description value="Creates a new 'script' tag in the body of the current test window, and adds the specified text into the body of the command. Scripts run in this way can often be debugged more easily than scripts executed using Selenium's 'getEval()' command. Beware that JS exceptions thrown in these script tags aren't managed by Selenium, so you should probably wrap your script in try/catch blocks if there is any chance that the script will throw an exception."/>
+	</command>
+	<command value="select">
+		<commandArgument value="select(selectLocator, optionLocator)" />
+		<arguments>
+			<argument value="selectLocator - an element locator identifying a drop-down menu"/>
+			<argument value="optionLocator - an option locator (a label by default)"/>
+		</arguments>
+		<description value="Option locators provide different ways of specifying options of an HTML Select element (e.g. for selecting a specific option, or for asserting that the selected option satisfies a specification). There are several forms of Select Option Locator."/>
+	</command>
+	<command value="store">
+		<commandArgument value="store(expression, variableName)" />
+		<arguments>
+			<argument value="expression - the value to store"/>
+			<argument value="variableName - the name of a variable in which the result is to be stored."/>
+		</arguments>
+		<description value="This command is a synonym for storeExpression."/>
+	</command>
+	<command value="submit">
+		<commandArgument value="submit(formLocator)" />
+		<arguments>
+			<argument value="formLocator - an element locator for the form you want to submit"/>
+		</arguments>
+		<description value="Submit the specified form. This is particularly useful for forms without submit buttons, e.g. single-input 'Search' forms."/>
+	</command>
+	<command value="submitAndWait">
+		<commandArgument value="submitAndWait(formLocator)" />
+		<arguments>
+			<argument value="formLocator - an element locator for the form you want to submit"/>
+		</arguments>
+		<description value="Submit the specified form. This is particularly useful for forms without submit buttons, e.g. single-input 'Search' forms."/>
+	</command>
+	<command value="type">
+		<commandArgument value="type(locator, value)" />
+		<arguments>
+			<argument value="locator - an element locator"/>
+			<argument value="value - the value to type"/>
+		</arguments>
+		<description value="Sets the value of an input field, as though you typed it in."/>
+	</command>
+	<command value="verifyChecked">
+		<commandArgument value="verifyChecked(locator)" />
+		<arguments>
+			<argument value="locator - an element locator pointing to a checkbox or radio button"/>
+		</arguments>
+		<description value="Gets whether a toggle-button (checkbox/radio) is checked. Fails if the specified element doesn't exist or isn't a toggle-button."/>
+	</command>
+	<command value="verifyElementNotPresent">
+		<commandArgument value="verifyElementNotPresent(locator)" />
+		<arguments>
+			<argument value="locator - an element locator"/>
+		</arguments>
+		<description value="RVerifies that the specified element is not on the page."/>
+	</command>
+	<command value="verifyElementPresent">
+		<commandArgument value="verifyElementPresent(locator)" />
+		<arguments>
+			<argument value="locator - an element locator"/>
+		</arguments>
+		<description value="Verifies that the specified element is somewhere on the page."/>
+	</command>
+	<command value="verifyLocation">
+		<commandArgument value="verifyLocation(pattern)" />
+		<arguments />
+		<description value="Gets the absolute URL of the current page."/>
+	</command>
+	<command value="verifyNotChecked">
+		<commandArgument value="verifyNotChecked(locator)" />
+		<arguments>
+			<argument value="locator - an element locator pointing to a checkbox or radio button"/>
+		</arguments>
+		<description value="Gets whether a toggle-button (checkbox/radio) is checked. Fails if the specified element doesn't exist or isn't a toggle-button."/>
+	</command>
+	<command value="verifyTable">
+		<commandArgument value="verifyTable(tableCellAddress, pattern)" />
+		<arguments>
+			<argument value="tableCellAddress - a cell address, e.g. 'foo.1.4'"/>
+		</arguments>
+		<description value="Gets the text from a cell of a table. The cellAddress syntax tableLocator.row.column, where row and column start at 0."/>
+	</command>
+	<command value="verifyText">
+		<commandArgument value="verifyText(locator, pattern)" />
+		<arguments>
+			<argument value="locator - an element locator"/>
+		</arguments>
+		<description value="Gets the text of an element. This works for any element that contains text. This command uses either the textContent (Mozilla-like browsers) or the innerText (IE-like browsers) of the element, which is the rendered text shown to the user."/>
+	</command>
+	<command value="verifyTitle">
+		<commandArgument value="verifyTitle(pattern)" />
+		<arguments />
+		<description value="Gets the title of the current page."/>
+	</command>
+	<command value="verifyValue">
+		<commandArgument value="verifyValue(locator, pattern)" />
+		<arguments>
+			<argument value="locator - an element locator"/>
+		</arguments>
+		<description value="Gets the (whitespace-trimmed) value of an input field (or anything else with a value parameter). For checkbox/radio elements, the value will be 'on' or 'off' depending on whether the element is checked or not."/>
+	</command>
+	<command value="waitForLocation">
+		<commandArgument value="waitForLocation(pattern)" />
+		<arguments />
+		<description value="Gets the absolute URL of the current page."/>
+	</command>
+</root>
