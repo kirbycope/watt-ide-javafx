@@ -1,6 +1,12 @@
 package application;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.apache.commons.io.FileUtils;
 
 import application.controllers.MainController;
 import javafx.application.Application;
@@ -29,6 +35,7 @@ public class Main extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) {
+		CheckDependencies();
 		// Get the applications's settings file and load it into memory
 		Settings.GetApplicationSettingsFile();
 		// Set the main stage
@@ -88,5 +95,51 @@ public class Main extends Application {
 		vbRecentProjects.getChildren().add(labelLastProject);
 
 		// TODO: Add more 'recent' projects
+	}
+
+	/**
+	 * Checks for the .JAR files needed to compile and run the tests
+	 */
+	private static void CheckDependencies() {
+		// Get the path of the first root drive
+		String rootPath = File.listRoots()[0].getPath();
+		// Create the WATT folder if not present
+		try { Files.createDirectories(Paths.get(rootPath + "WATT")); }
+		catch (Exception e) { e.printStackTrace(); }
+		// Hamcrest
+		String hamcrest = rootPath + "WATT" + "\\hamcrest-core-1.3.jar";
+		File f = new File(hamcrest);
+		if (f.exists() == false){
+			CopyDependency("/lib/hamcrest-core-1.3.jar", hamcrest);
+		}
+		// JUnit
+		String junit = rootPath + "WATT" + "\\junit-4.12.jar";
+		f = new File(junit);
+		if (f.exists() == false){
+			CopyDependency("/lib/junit-4.12.jar", junit);
+		}
+		// Selenium
+		String selenium = rootPath + "WATT" + "\\client-combined-3.0.1-nodeps.jar";
+		f = new File(selenium);
+		if (f.exists() == false){
+			CopyDependency("/lib/client-combined-3.0.1-nodeps.jar", selenium);
+		}
+		// Selenium Server
+		String seleniumServer = rootPath + "WATT" + "\\selenium-server-standalone-3.0.1.jar";
+		f = new File(seleniumServer);
+		if (f.exists() == false){
+			CopyDependency("/lib/selenium-server-standalone-3.0.1.jar", seleniumServer);
+		}
+	}
+
+	/**
+	 * Copies a resource file to the local file system
+	 */
+	private static void CopyDependency(String origin, String destination) {
+		// Load the contents of the source file into a FileStream
+		InputStream inputStream = Utilities.class.getResourceAsStream(origin); // "/demo/TestCase01.txt"
+		// Save the FileStream as a File
+		try { FileUtils.copyInputStreamToFile(inputStream, new File(destination)); }
+		catch (IOException e) { e.printStackTrace(); }
 	}
 }

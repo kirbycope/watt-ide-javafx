@@ -93,9 +93,11 @@ public class IdeController {
 				// For now there is a demo file to roll with (TestCase01.html)
 			// TODO: Convert the HTML file to a JAVA file
 				// For now there is a demo file to roll with (TestCase01.java)
-			// Compile the JAVA file to a CLASS file
-			Utilities.RunCommand(IDE.projectFolderPath + "\\compile-script.bat");
-			// Call JUnit with the class file
+			// TODO: Build out the .bat file to compile
+				// Compile the JAVA file to a CLASS file
+				Utilities.RunCommand(IDE.projectFolderPath + "\\compile-script.bat");
+			// TODO: Build out the .bat file to compile
+				// Call JUnit with the class file
 			Utilities.RunCommand(IDE.projectFolderPath + "\\run-script.bat");
 		}
 		else {
@@ -207,7 +209,6 @@ public class IdeController {
 			comboBox.prefWidthProperty().bind(firstRow.widthProperty());
 			// Set the placeholder text for the ComboBox
 			comboBox.promptTextProperty().set("Command");
-			// TODO: Load ComboBox options
 			// Set the ComboBox value
 			comboBox.setValue(command);
 			// Add the ComboBox to the HBox (second row)

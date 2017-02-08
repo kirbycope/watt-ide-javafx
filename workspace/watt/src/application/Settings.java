@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class Settings {
@@ -70,6 +71,15 @@ public class Settings {
 	public static void SetLastOpenedProject(String path) {
 		// Get the <root> element of the Document
 		org.w3c.dom.Element root = settingsFile.getDocumentElement();
+		// Remove previous entry
+		Node previousLastProject = null;
+		try {
+			previousLastProject = root.getElementsByTagName("lastProject").item(0);
+		}
+		catch (Exception e) { /* do nothing */ }
+		if (previousLastProject != null) {
+			root.removeChild(previousLastProject);
+		}
 		// Create a child node for <lastProject value="{path}">
 		org.w3c.dom.Element lastProjectNode = settingsFile.createElement("lastProject");
 		lastProjectNode.setAttribute("value", path);
