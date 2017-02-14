@@ -46,16 +46,16 @@ public class IdeController {
 		// Get the source of the event
 		Label source = (Label) mouseEvent.getSource();
 		// Handle source state
-		if (source.getText().equals("➖")) {
+		if (source.getText().equals("\u2796")) {
 			UiHelpers.GetConsoleTextAreaNode().setManaged(false);
 			UiHelpers.GetConsoleTextAreaNode().setVisible(false);
-			source.setText("➕");
+			source.setText("\u2795");
 			source.setTooltip(new Tooltip("Expand console"));
 		}
 		else {
 			UiHelpers.GetConsoleTextAreaNode().setManaged(true);
 			UiHelpers.GetConsoleTextAreaNode().setVisible(true);
-			source.setText("➖");
+			source.setText("\u2796");
 			source.setTooltip(new Tooltip("Collapse console"));
 		}
 	}
@@ -169,7 +169,7 @@ public class IdeController {
 			// Add the TextField to the HBox (first row)
 			firstRow.getChildren().add(textField);
 			// Create a Button for Expand or Collapse
-			Button button1 = new Button("➕");
+			Button button1 = new Button("\u2795");
 			// Set the ToolTip for the Button
 			button1.setTooltip(new Tooltip("Expand Test Step"));
 			// Set the onClick for the Button
@@ -184,7 +184,7 @@ public class IdeController {
 			// Add the Button to the HBox (first row)
 			firstRow.getChildren().add(button1);
 			// Create a Button for Remove Test Step
-			Button button2 = new Button("❌");
+			Button button2 = new Button("\u274C");
 			// Set the ToolTip for the Button
 			button2.setTooltip(new Tooltip("Remove Test Step"));
 			// Set the onClick for the Button
@@ -255,8 +255,8 @@ public class IdeController {
 	 */
 	public static void AddTab(String name) {
 		// Add only if it is a document
-		if (name.contains("🗋 ")) {
-			// Trim "🗋 " from name
+		if (name.contains("\uD83D\uDDCB")) {
+			// Trim "ðŸ—‹ " from name
 			name = name.substring(2);
 			// Get TabPane
 			TabPane tabPane = (TabPane) IDE.ideStage.getScene().lookup("#tab-pane");
@@ -327,8 +327,8 @@ public class IdeController {
 	 * Collapses a Test Step to only show the first row
 	 */
 	public static void CollapseTestStep(Button source, ObservableList<Node> rows) {
-		// Change the expand/collapse Button text to ➕
-		source.setText("➕");
+		// Change the expand/collapse Button text
+		source.setText("\u2795");
 		// Change the ToolTip
 		source.getTooltip().setText("Expand All Steps");
 		// Make each row (except the first) hidden
@@ -342,8 +342,8 @@ public class IdeController {
 				testStepContainer.getStyleClass().add("test-step-container-collapsed");
 				// Get the Expand/Collapse Button
 				Button expandCollpase = (Button) ((HBox) rows.get(i)).getChildren().get(2);
-				// Change the expand/collapse Button text to ➕
-				expandCollpase.setText("➕");
+				// Change the expand/collapse Button text
+				expandCollpase.setText("\u2795");
 				// Change the ToolTip
 				expandCollpase.getTooltip().setText("Expand Test Step");
 			}
@@ -358,8 +358,8 @@ public class IdeController {
 	 * Expands a Test Step to show all rows
 	 */
 	private static void ExpandTestStep(Button source, ObservableList<Node> rows) {
-		// Change the expand/collapse Button text to ➖
-		source.setText("➖");
+		// Change the expand/collapse Button text
+		source.setText("\u2796");
 		// Update ToolTip
 		source.getTooltip().setText("Collapse All Steps");
 		// Make each row visible
@@ -373,8 +373,8 @@ public class IdeController {
 				testStepContainer.getStyleClass().add("test-step-container-expanded");
 				// Get the Expand/Collapse Button
 				Button expandCollpase = (Button) ((HBox) rows.get(i)).getChildren().get(2);
-				// Change the expand/collapse Button text to ➖
-				expandCollpase.setText("➖");
+				// Change the expand/collapse Button text
+				expandCollpase.setText("\u2796");
 				// Change the ToolTip
 				expandCollpase.getTooltip().setText("Collapse Test Step");
 			}

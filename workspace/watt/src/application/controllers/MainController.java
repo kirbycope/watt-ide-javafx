@@ -85,7 +85,7 @@ public class MainController {
 		// Add the TreeView to the parent node
 		vbox.getChildren().add(tv);
 		// Create the root TreeItem for the TreeView
-		TreeItem<String> ti = new TreeItem<String>("🗀 Project Folder");
+		TreeItem<String> ti = new TreeItem<String>("\uD83D\uDDC0" + " Project Folder");
 		// Add the root TreeItem to the TreeView
 		tv.setRoot(ti);
 		// Load Projects Settings XML file
@@ -100,10 +100,10 @@ public class MainController {
 				org.w3c.dom.Node item = childNodes.item(i);
 				String value = null;
 				if (item.getNodeName().equals("file")) {
-					value = "🗋 " + Utilities.getXmlNodeAttribute(item, "name");
+					value = "\uD83D\uDDCB" + " " + Utilities.getXmlNodeAttribute(item, "name");
 				}
 				else if (item.getNodeName().equals("folder")) {
-					value = "🗀 " + Utilities.getXmlNodeAttribute(item, "name");
+					value = "\uD83D\uDDC0" + " " + Utilities.getXmlNodeAttribute(item, "name");
 				}
 				// Create a child TreeItem of the root TreeItem
 				TreeItem<String> treeItem = new TreeItem<String>(value);
