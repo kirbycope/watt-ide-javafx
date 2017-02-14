@@ -148,6 +148,11 @@ public class MainController {
 		    else {
 		    	resultString = result.get() + "\\";
 		    }
+			// Check if the folder already exists
+			File directory = new File(resultString);
+			if (directory.exists() == false) {
+				directory.mkdir();
+			}
 	    	// Create a new Document to hold the project settings
 		    org.w3c.dom.Document doc = Utilities.CreateDocument();
 		    // Create the root element node
