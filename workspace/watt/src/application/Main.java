@@ -23,6 +23,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+	public static Stage mainStage;
+
 	/**
 	 * Called when application is opened
 	 */
@@ -47,10 +49,12 @@ public class Main extends Application {
 	 * Initialize the Main stage
 	 */
 	private void initMainLayout(Stage primaryStage) throws IOException {
+		// Set the stage reference
+		mainStage = primaryStage;
 		// Application (Stage) Icon
-		primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/res/drawable/icon.png")));
+		mainStage.getIcons().add(new Image(Main.class.getResourceAsStream("/res/drawable/icon.png")));
 		// Application (Stage) Title
-		primaryStage.setTitle("WATT");
+		mainStage.setTitle("WATT");
 		// Create a new FXML Loader (loads an object hierarchy from an XML document)
 		FXMLLoader loader = new FXMLLoader();
 		// Give the loader the location of the XML document
@@ -58,13 +62,13 @@ public class Main extends Application {
 		// Load an object hierarchy from the FXML document into a generic (base class) node
 		Parent root = loader.load();
 		// Load the "scene" into the "stage" and set the "stage"
-		primaryStage.setScene(new Scene(root));
+		mainStage.setScene(new Scene(root));
 		// Show the application (stage) window
-		primaryStage.show();
+		mainStage.show();
 		// Disable resize
-		primaryStage.setResizable(false);
+		mainStage.setResizable(false);
 		// Add Recent Projects
-		AddRecentProjects(primaryStage);
+		AddRecentProjects(mainStage);
 	}
 
 	/**

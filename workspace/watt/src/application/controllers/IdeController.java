@@ -256,7 +256,7 @@ public class IdeController {
 	public static void AddTab(String name) {
 		// Add only if it is a document
 		if (name.contains("\uD83D\uDDCB")) {
-			// Trim "ðŸ—‹ " from name
+			// Trim leading characters name
 			name = name.substring(2);
 			// Get TabPane
 			TabPane tabPane = (TabPane) IDE.ideStage.getScene().lookup("#tab-pane");
@@ -308,7 +308,7 @@ public class IdeController {
 				// Parse only if there was a matching <file> node
 				if (fileNode != null) {
 					// Assemble the file path of the Test Case HTML file
-					String fileName = IDE.projectFolderPath + "\\TestCase01.html"; // TODO better (not hardcoded)
+					String fileName = IDE.projectFolderPath + "\\"+ name.trim() +".html";
 					// Load the HTML file
 					Utilities.LoadSeleneseHtmlFile(fileName);
 				}

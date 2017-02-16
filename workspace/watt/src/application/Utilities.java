@@ -38,6 +38,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 
 public class Utilities {
 
@@ -47,6 +51,31 @@ public class Utilities {
 	public static void CreateTxtFileFromString(String content, String destination) {
 		try ( PrintStream ps = new PrintStream(destination) ) {
 			ps.println(content);
+		}
+		catch (FileNotFoundException e) { e.printStackTrace(); }
+	}
+
+	private static void CreateNewTestCaseHtmlFile(String destination, String testName){
+		try ( PrintStream ps = new PrintStream(destination) ) {
+			ps.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			ps.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
+			ps.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">");
+			ps.println("<head profile=\"http://selenium-ide.openqa.org/profiles/test-case\">");
+			ps.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+			ps.println("<link rel=\"selenium.base\" href=\"https://www.google.com\" />");
+			ps.println("<title>" + testName + "</title>");
+			ps.println("</head>");
+			ps.println("<body>");
+			ps.println("<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">");
+			ps.println("<thead>");
+			ps.println("<tr><td rowspan=\"1\" colspan=\"3\">" + testName + "</td></tr>");
+			ps.println("</thead>");
+			ps.println("<tbody>");
+			ps.println("");
+			ps.println("</tbody>");
+			ps.println("</table>");
+			ps.println("</body>");
+			ps.println("</html>");
 		}
 		catch (FileNotFoundException e) { e.printStackTrace(); }
 	}
@@ -62,6 +91,51 @@ public class Utilities {
 		catch (ParserConfigurationException e1) { e1.printStackTrace();	}
 	    org.w3c.dom.Document doc = builder.newDocument();
 		return doc;
+	}
+
+	public static void CreateNewTestFolder() {
+		System.out.println("New Folder selected...");
+        // Show Directory Chooser
+        String folderPath = Utilities.ShowDirectoryChooser(IDE.ideStage);
+        // With result (String) create the Node in XML to match the file system
+        if (folderPath.length() > 0) {
+        	System.out.println("File Path: " + folderPath); // DEBUGGING
+        }
+	}
+
+	public static void CreateNewTestStep() {
+		System.out.println("New Test Case selected..."); // DEBUGGING
+        // Show File Chooser
+        String filePath = Utilities.ShowHtmlFileChooser(IDE.ideStage);
+        // With result (String) create the Node in XML to match the file system
+        if (filePath.length() > 0) {
+        	// Get the directory
+        	String directory = filePath.substring(0, filePath.lastIndexOf("\\")+1);
+        	// Get the test name
+        	String testName = filePath.substring(filePath.lastIndexOf("\\")+1, filePath.indexOf("."));
+        	// Create the HTML file
+        	CreateNewTestCaseHtmlFile(filePath, testName);
+
+        	// TODO: More than just the <root>
+
+        	// Check if we can add to the <root> Node of the ProjectSettings.xml file
+        	if( directory.equals(IDE.projectFolderPath) || directory.equals(IDE.projectFolderPath + "\\") ) {
+        		// Get the Project Settings file
+        		org.w3c.dom.Document doc = Utilities.LoadDocumentFromFilePath(IDE.projectFolderPath + "\\ProjectSettings.xml");
+        		// Get the <root> Node
+        		org.w3c.dom.Element root = doc.getDocumentElement();
+        		// Create the new element
+    		    org.w3c.dom.Element child = doc.createElement("file");
+    		    // Give the new element a value
+    		    child.setAttribute("name", testName);
+    		    // Add the root element to the document
+    		    root.appendChild(child);
+    		    // Write the Document to an XML File at the specified location
+    		    Utilities.writeDocumentToFile(doc, new File(IDE.projectFolderPath + "\\ProjectSettings.xml"));
+
+    		    // Re-load the UI?? or... just add it ourselves for now...??
+        	}
+        }
 	}
 
 	/**
@@ -268,6 +342,61 @@ public class Utilities {
 				catch (IOException e) { e.printStackTrace(); }
 			}
 		}).start();
+	}
+
+	/**
+	 * Shows the DirectoryChooser in the given stage
+	 * @return
+	 */
+	public static String ShowDirectoryChooser(Stage stage) {
+		DirectoryChooser directoryChooser = new DirectoryChooser();
+		directoryChooser.setTitle("Create New Folder");
+		if (IDE.projectFolderPath != null) {
+			directoryChooser.setInitialDirectory(new File(IDE.projectFolderPath));
+		}
+		String filePath = "";
+		File directory = directoryChooser.showDialog(stage);
+		if(directory != null) {
+			filePath = directory.getAbsolutePath();
+		}
+		return filePath;
+	}
+
+	/**
+	 * Shows the FileChooser (for HTML files) in the given Stage
+	 */
+	public static String ShowHtmlFileChooser(Stage stage) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Create New Test Case File");
+		fileChooser.getExtensionFilters().addAll(
+			new ExtensionFilter("HTML File", "*.html")
+		);
+		if (IDE.projectFolderPath != null) {
+			fileChooser.setInitialDirectory(new File(IDE.projectFolderPath));
+		}
+		String filePath = "";
+		File file = fileChooser.showSaveDialog(stage);
+		if (file != null) {
+			filePath = file.getAbsolutePath();
+		}
+		return filePath;
+	}
+
+	/**
+	 * Shows the FileChooser (for XML files) in the given Stage
+	 */
+	public static String ShowXmlFileChooser(Stage stage) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Choose XML File");
+		fileChooser.getExtensionFilters().addAll(
+			new ExtensionFilter("XML Files", "*.xml")
+		);
+		String filePath = "";
+		File file = fileChooser.showOpenDialog(stage);
+		if (file != null) {
+			filePath = file.getAbsolutePath();
+		}
+		return filePath;
 	}
 
 	/**
