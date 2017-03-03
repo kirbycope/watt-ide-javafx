@@ -141,7 +141,7 @@ public class Main extends Application {
 	 */
 	private static void CopyDependency(String origin, String destination) {
 		// Load the contents of the source file into a FileStream
-		InputStream inputStream = Utilities.class.getResourceAsStream(origin); // "/demo/TestCase01.txt"
+		InputStream inputStream = Utilities.class.getResourceAsStream(origin);
 		// Save the FileStream as a File
 		try { FileUtils.copyInputStreamToFile(inputStream, new File(destination)); }
 		catch (IOException e) { e.printStackTrace(); }

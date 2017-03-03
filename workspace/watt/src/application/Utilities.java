@@ -46,15 +46,111 @@ import javafx.stage.Stage;
 public class Utilities {
 
 	/**
-	 * Creates a .txt file at the specified location with the given content
+	 * Creates the compile-script.bat file for the given Test Case
 	 */
-	public static void CreateTxtFileFromString(String content, String destination) {
+	public static void CreateBatFileToCompileJavaFiles(String testCaseName) {
+		UiHelpers.WriteToIdeConsole("Creating .bat file to compile .java files to .class files... ");
+		try {
+			StringBuilder sb = new StringBuilder();
+			sb.append("cd " + IDE.projectFolderPath + System.lineSeparator());
+			// Trim the project file path to go up a level
+			String parentFolderOfProject = IDE.projectFolderPath.substring(0, IDE.projectFolderPath.lastIndexOf("\\") + 1);
+			sb.append("javac -cp " + parentFolderOfProject +"*; TestBase.java " + testCaseName + ".java");
+			// Write File to disk
+			CreateFileFromString(sb.toString(), IDE.projectFolderPath + "\\compile-script.bat");
+			UiHelpers.WriteToIdeConsole("Complete." + System.lineSeparator());
+		}
+		catch (Exception e) {
+			UiHelpers.WriteToIdeConsole("Failed!" + System.lineSeparator());
+			throw e;
+		}
+	}
+
+	/**
+	 * Creates the run-script.bat file for the given Test Case
+	 */
+	public static void CreateBatFileToRunJunit(String testCaseName) {
+		UiHelpers.WriteToIdeConsole("Creating .bat file to run JUnit using the .class files... ");
+		try {
+			StringBuilder sb = new StringBuilder();
+			sb.append("cd " + IDE.projectFolderPath + System.lineSeparator());
+			sb.append("cd.."+ System.lineSeparator());
+			// Trim the project file path to go up a level
+			String parentFolderOfProject = IDE.projectFolderPath.substring(0, IDE.projectFolderPath.lastIndexOf("\\") + 1);
+			// Trim the project file path to get the folder name
+			String folderOfProject = IDE.projectFolderPath.substring(IDE.projectFolderPath.lastIndexOf("\\") + 1);
+			sb.append("java -cp " + parentFolderOfProject +"*;" + folderOfProject + "\\*; org.junit.runner.JUnitCore " + folderOfProject + "." + testCaseName);
+			// Write File to disk
+			CreateFileFromString(sb.toString(), IDE.projectFolderPath + "\\run-script.bat");
+			UiHelpers.WriteToIdeConsole("Complete." + System.lineSeparator());
+		}
+		catch (Exception e) {
+			UiHelpers.WriteToIdeConsole("Failed!" + System.lineSeparator());
+			throw e;
+		}
+	}
+
+	/**
+	 * Creates a copy of TestBase.java in the specified destination
+	 */
+	public static void CreateCopyOfTestBase(String destination){
+		UiHelpers.WriteToIdeConsole("Creating a copy of TestBase.java... ");
+		try {
+			// Trim the project file path to get the folder name
+			String folderOfProject = IDE.projectFolderPath.substring(IDE.projectFolderPath.lastIndexOf("\\") + 1);
+			// Build out the file's content
+			StringBuilder sb = new StringBuilder();
+			sb.append("package " + folderOfProject + ";" + System.lineSeparator());
+			sb.append(System.lineSeparator());
+			sb.append("import org.junit.*;" + System.lineSeparator());
+			sb.append("import org.openqa.selenium.*;" + System.lineSeparator());
+			sb.append("import org.openqa.selenium.chrome.ChromeDriver;" + System.lineSeparator());
+			sb.append(System.lineSeparator());
+			sb.append("public class TestBase {" + System.lineSeparator());
+			sb.append("	protected WebDriver driver;" + System.lineSeparator());
+			String baseAddress = Settings.GetBaseAddress();
+			if (baseAddress != null) {
+				sb.append("	protected String baseUrl = \"" + baseAddress + "\";" + System.lineSeparator());
+			}
+			else {
+				sb.append("	protected String baseUrl = \"http://timothycope.com/\";" + System.lineSeparator());
+			}
+			sb.append(System.lineSeparator());
+			sb.append("	@Before" + System.lineSeparator());
+			sb.append("	public void setUp() throws Exception {" + System.lineSeparator());
+			sb.append("		System.setProperty(\"webdriver.chrome.driver\", \"C:\\\\Selenium\\\\chromedriver.exe\");" + System.lineSeparator());
+			sb.append("		driver = new ChromeDriver();" + System.lineSeparator());
+			sb.append("	}" + System.lineSeparator());
+			sb.append(System.lineSeparator());
+			sb.append("	@After" + System.lineSeparator());
+			sb.append("	public void tearDown() throws Exception {" + System.lineSeparator());
+			sb.append("		driver.quit();" + System.lineSeparator());
+			sb.append("	}" + System.lineSeparator());
+			sb.append("}" + System.lineSeparator());
+			sb.append(System.lineSeparator());
+			// Write the content to a file
+			CreateFileFromString(sb.toString(), destination);
+			UiHelpers.WriteToIdeConsole("Complete." + System.lineSeparator());
+		}
+		catch (Exception e) {
+			UiHelpers.WriteToIdeConsole("Failed!" + System.lineSeparator());
+			throw e;
+		}
+	}
+
+	/**
+	 * Creates a file at the specified location with the given content
+	 */
+	public static void CreateFileFromString(String content, String destination) {
 		try ( PrintStream ps = new PrintStream(destination) ) {
 			ps.println(content);
 		}
 		catch (FileNotFoundException e) { e.printStackTrace(); }
 	}
 
+	/**
+	 * Creates a Test Case .html file at the specified location with the given testName
+	 */
 	private static void CreateNewTestCaseHtmlFile(String destination, String testName){
 		try ( PrintStream ps = new PrintStream(destination) ) {
 			ps.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -71,7 +167,6 @@ public class Utilities {
 			ps.println("<tr><td rowspan=\"1\" colspan=\"3\">" + testName + "</td></tr>");
 			ps.println("</thead>");
 			ps.println("<tbody>");
-			ps.println("");
 			ps.println("</tbody>");
 			ps.println("</table>");
 			ps.println("</body>");
@@ -81,7 +176,7 @@ public class Utilities {
 	}
 
 	/**
-	 * Creates a new instance of a [org.w3c.dom.]Document
+	 * Creates a new instance of a org.w3c.dom.Document
 	 */
 	public static org.w3c.dom.Document CreateDocument() {
 		// Create a new Document
@@ -93,6 +188,9 @@ public class Utilities {
 		return doc;
 	}
 
+	/**
+	 * Shows the directory chooser for where to save the new folder
+	 */
 	public static void CreateNewTestFolder() {
 		System.out.println("New Folder selected...");
         // Show Directory Chooser
@@ -103,6 +201,9 @@ public class Utilities {
         }
 	}
 
+	/**
+	 * Shows the file chooser for where to save the new test
+	 */
 	public static void CreateNewTestStep() {
 		System.out.println("New Test Case selected..."); // DEBUGGING
         // Show File Chooser
@@ -132,10 +233,45 @@ public class Utilities {
     		    root.appendChild(child);
     		    // Write the Document to an XML File at the specified location
     		    Utilities.writeDocumentToFile(doc, new File(IDE.projectFolderPath + "\\ProjectSettings.xml"));
-
-    		    // Re-load the UI?? or... just add it ourselves for now...??
+    		    // Update the TreeView
+    		    UiHelpers.UpdateTreeView();
         	}
         }
+	}
+
+	/**
+	 * Creates a .java file by parsing the given .html file
+	 */
+	public static void ExportHtmlToJava(String testCaseName, String destination) {
+		UiHelpers.WriteToIdeConsole("Creating .java file from Test Case... ");
+		try {
+			// Trim the project file path to get the folder name
+			String folderOfProject = IDE.projectFolderPath.substring(IDE.projectFolderPath.lastIndexOf("\\") + 1);
+			// Build out the file's content
+			StringBuilder sb = new StringBuilder();
+			sb.append("package " + folderOfProject + ";" + System.lineSeparator());
+			sb.append(System.lineSeparator());
+			sb.append("import org.junit.*;" + System.lineSeparator());
+			sb.append("import org.openqa.selenium.*;" + System.lineSeparator());
+			sb.append("import " + folderOfProject + ".TestBase;" + System.lineSeparator());
+			sb.append(System.lineSeparator());
+			sb.append("public class " + testCaseName + " extends TestBase {" + System.lineSeparator());
+			sb.append("  @Test" + System.lineSeparator());
+			sb.append("  public void " + testCaseName.toLowerCase() + "() throws Exception {" + System.lineSeparator());
+
+			// TODO: Parse the HTML and each test step
+
+			sb.append("  }" + System.lineSeparator());
+			sb.append("}" + System.lineSeparator());
+			sb.append(System.lineSeparator());
+			// Write the content to a file
+			CreateFileFromString(sb.toString(), destination);
+			UiHelpers.WriteToIdeConsole("Complete." + System.lineSeparator());
+		}
+		catch (Exception e) {
+			UiHelpers.WriteToIdeConsole("Failed!" + System.lineSeparator());
+			throw e;
+		}
 	}
 
 	/**

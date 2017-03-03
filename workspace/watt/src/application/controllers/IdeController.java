@@ -25,7 +25,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -89,24 +88,33 @@ public class IdeController {
 		Tab selectedTab = Utilities.GetCurrentTab();
 		// Ensure there is a selected Tab
 		if(selectedTab != null) {
-			// TODO: Save the test case
-				// For now there is a demo file to roll with (TestCase01.html)
-			// TODO: Convert the HTML file to a JAVA file
-				// For now there is a demo file to roll with (TestCase01.java)
-			// TODO: Build out the .bat file to compile
-				// Compile the JAVA file to a CLASS file
-				Utilities.RunCommand(IDE.projectFolderPath + "\\compile-script.bat");
-			// TODO: Build out the .bat file to compile
-				// Call JUnit with the class file
+			// Save the current Test Case
+			SaveTestCase(selectedTab);
+			// Run script to compile the tests
+			Utilities.RunCommand(IDE.projectFolderPath + "\\compile-script.bat");
+			// Run script to run test(s) via JUnit
 			Utilities.RunCommand(IDE.projectFolderPath + "\\run-script.bat");
 		}
 		else {
-			// Get the "console" TextArea
-			TextArea taConsole = (TextArea) IDE.ideStage.getScene().lookup("#console-text-area");
-			// Add a new line separator if there is text already in the TextArea
-			if (taConsole.getText().length() > 0){ taConsole.appendText(System.lineSeparator()); }
 			// Write message to the "console"
-			taConsole.appendText("No Test Case (Tab) open");
+			UiHelpers.WriteToIdeConsole("No Test Case (Tab) open");
+		}
+	}
+
+	/**
+	 * Saves the current Tab's test case
+	 */
+	public void Save(MouseEvent mouseEvent) {
+		// Get selected tab
+		Tab selectedTab = Utilities.GetCurrentTab();
+		// Ensure there is a selected Tab
+		if(selectedTab != null) {
+			// Save the current Test Case
+			SaveTestCase(selectedTab);
+		}
+		else {
+			// Write message to the "console"
+			UiHelpers.WriteToIdeConsole("No Test Case (Tab) open");
 		}
 	}
 
@@ -415,11 +423,11 @@ public class IdeController {
 		// TODO : Check if already opened
 
 		// Create a new application (Stage) window
-		Stage settingsStage = new Stage();
+		application.Settings.applicationSettingsStage = new Stage();
 		// Application (Stage) Icon
-		settingsStage.getIcons().add(new Image(Main.class.getResourceAsStream("/res/drawable/icon.png")));
+		application.Settings.applicationSettingsStage.getIcons().add(new Image(Main.class.getResourceAsStream("/res/drawable/icon.png")));
 		// Application (Stage) Title
-		settingsStage.setTitle("WATT - Settings");
+		application.Settings.applicationSettingsStage.setTitle("WATT - Settings");
 		// Create a new FXML Loader (loads an object hierarchy from an XML document)
  		FXMLLoader loader = new FXMLLoader();
  		// Give the loader the location of the XML document
@@ -427,14 +435,14 @@ public class IdeController {
  		// Load an object hierarchy from the FXML document into a generic (base class) node
  		Parent root = loader.load();
 		// Load the "scene" into the "stage" and set the "stage"
- 		settingsStage.setScene(new Scene(root));
+ 		application.Settings.applicationSettingsStage.setScene(new Scene(root));
 		// Show the application (stage) window
- 		settingsStage.show();
+ 		application.Settings.applicationSettingsStage.show();
 
+ 		// TODO: Populate data in Settings stage
  		// Get the Base Address TextField
- 		TextField tfBaseAddress = (TextField) settingsStage.getScene().lookup("#base-address");
- 		// Set the text value of the TextField
- 		tfBaseAddress.setText(IDE.baseAddress);
+ 		TextField tfBaseAddress = (TextField) application.Settings.applicationSettingsStage.getScene().lookup("#base-address");
+ 		tfBaseAddress.setText(application.Settings.GetBaseAddress());
 	}
 
 	/**
@@ -446,6 +454,23 @@ public class IdeController {
 		VBox grandParent = (VBox) parent.getParent();
 		VBox greatGrandParent = (VBox) grandParent.getParent();
 		greatGrandParent.getChildren().remove(grandParent);
+	}
+
+	public static void SaveTestCase(Tab selectedTab){
+		// Clear the console log
+		UiHelpers.GetConsoleTextAreaNode().clear();
+		// Get the Tab's title
+		String testCaseName = selectedTab.getText().trim();
+		// TODO: Save the test case
+
+		// TODO: Convert the HTML file to a JAVA file
+		Utilities.ExportHtmlToJava(testCaseName, IDE.projectFolderPath + "\\" + testCaseName + ".java");
+		// Create a copy of TestBase.java
+		Utilities.CreateCopyOfTestBase(IDE.projectFolderPath + "\\TestBase.java");
+		// Create the "compile-script" .bat file
+		Utilities.CreateBatFileToCompileJavaFiles(testCaseName);
+		// Create the "run-script" .bat file
+		Utilities.CreateBatFileToRunJunit(testCaseName);
 	}
 
 	/**
@@ -480,5 +505,4 @@ public class IdeController {
 		// Clear the Reference
 		UiHelpers.GetReferenceWrapperNode().getChildren().clear();
 	}
-
 }

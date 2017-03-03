@@ -11,11 +11,12 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="600.0" prefWidth="800.0" styleClass="ide-wrapper" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.IdeController">
+<VBox fx:controller="application.controllers.IdeController" prefHeight="600.0" prefWidth="800.0" styleClass="ide-wrapper" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox styleClass="toolbar-parent">
          <children>
@@ -35,7 +36,7 @@
                   <Insets left="2.0" right="2.0" />
                </padding>
             </Label>
-            <Label styleClass="toolbar-label" text="🖫">
+            <Label id="toolbar-save" onMouseClicked="#Save" styleClass="toolbar-label" text="🖫">
                <tooltip>
                   <Tooltip text="Save" />
                </tooltip>
@@ -98,6 +99,8 @@
                         <Insets bottom="2.0" />
                      </VBox.margin>
                   </HBox>
+               	  <TreeView id="tree-view">
+               	  </TreeView>
                </children>
                <HBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

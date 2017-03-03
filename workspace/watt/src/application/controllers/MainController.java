@@ -2,23 +2,13 @@ package application.controllers;
 
 import java.io.File;
 import java.io.IOException;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 import application.IDE;
 import application.Main;
 import application.Settings;
+import application.UiHelpers;
 import application.Utilities;
-import application.models.TreeCellImpl;
-import application.models.TreeItemFile;
-import application.models.TreeItemFolder;
-import javafx.event.EventHandler;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 public class MainController {
 
@@ -73,7 +63,6 @@ public class MainController {
 	/**
 	 * Load the Project into the IDE Stage
 	 */
-	@SuppressWarnings("unchecked")
 	public static void loadProject(Stage mainStage, String filePath) {
 		// Set the last opened project
 		Settings.SetLastOpenedProject(filePath);
@@ -87,61 +76,7 @@ public class MainController {
 		catch (IOException e) { e.printStackTrace(); }
 		// Store the project folder path
 		IDE.projectFolderPath = filePath.replace("\\ProjectSettings.xml", "");
-		// Get TreeView parent
-		VBox vbox = (VBox) IDE.ideStage.getScene().lookup("#tree-view-parent");
-		// Create TreeView for Project Explorer
-		TreeView<String> tv = new TreeView<String>();
-		// Add EventListener to TreeView for double-click
-		tv.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		    @Override
-		    public void handle(MouseEvent mouseEvent) {
-		        if(mouseEvent.getClickCount() == 2) {
-		            TreeItem<String> item = tv.getSelectionModel().getSelectedItem();
-		            IdeController.AddTab(item.getValue());
-		        }
-		    }
-		});
-		/* Give the TreeView a ContextMenu handler for its TreeCells
-		 * Source - http://stackoverflow.com/a/20695628/1106708
-		*/
-		tv.setCellFactory(new Callback<TreeView<String>,TreeCell<String>>(){
-	        @Override
-	        public TreeCell<String> call(TreeView<String> p) {
-	            return new TreeCellImpl();
-	        }
-	    });
-		// Add the TreeView to the parent node
-		vbox.getChildren().add(tv);
-		// Create the root TreeItem for the TreeView
-		TreeItemFolder ti = new TreeItemFolder("\uD83D\uDDC0" + " Project Folder");
-		// Add the root TreeItem to the TreeView
-		tv.setRoot(ti);
-		// Load Projects Settings XML file
-		Document doc = Utilities.LoadDocumentFromFilePath(filePath);
-		// Parse the XML document if there is one to parse
-		if (doc != null) {
-			// Get the child Node(s) of the root element
-			NodeList childNodes = doc.getDocumentElement().getChildNodes();
-			// Parse over the root element children
-			// TODO: more intelligent recursion that handles folder/file structure
-			for (int i = 0; i < childNodes.getLength(); i++) {
-				org.w3c.dom.Node item = childNodes.item(i);
-				String value = null;
-				if (item.getNodeName().equals("file")) {
-					value = "\uD83D\uDDCB" + " " + Utilities.getXmlNodeAttribute(item, "name");
-					// Create a TreeItem for File
-					TreeItemFile treeItemFile = new TreeItemFile(value);
-					// Add the TreeItem to the root TreeItem
-					ti.getChildren().add(treeItemFile);
-				}
-				else if (item.getNodeName().equals("folder")) {
-					value = "\uD83D\uDDC0" + " " + Utilities.getXmlNodeAttribute(item, "name");
-					// Create a TreeItem for Folder
-					TreeItemFolder treeItemFolder = new TreeItemFolder(value);
-					// Add the TreeItem to the root TreeItem
-					ti.getChildren().add(treeItemFolder);
-				}
-			}
-		}
+		// Update the TreeView
+		UiHelpers.UpdateTreeView();
 	}
 }

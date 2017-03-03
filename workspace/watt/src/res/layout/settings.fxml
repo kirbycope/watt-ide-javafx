@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox styleClass="settings-wrapper" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:controller="application.controllers.SettingsController" styleClass="settings-wrapper" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
             <HBox>
                <children>
@@ -20,7 +20,7 @@
 	                 </tooltip>
                   </Label>
                   <TextField id="base-address" promptText="http://www.example.com" HBox.hgrow="ALWAYS" />
-                  <Button text="Save" />
+                  <Button onMouseClicked="#SaveBaseAddress" text="Save" />
                </children>
             </HBox>
       <HBox>
