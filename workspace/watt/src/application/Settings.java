@@ -52,7 +52,6 @@ public class Settings {
 		}
 	}
 
-
 	/**
 	 * Gets the Base Address
 	 */
@@ -71,7 +70,6 @@ public class Settings {
 		return baseAddress;
 	}
 
-
 	/**
 	 * Gets the path of the last opened project location
 	 */
@@ -87,7 +85,6 @@ public class Settings {
 		}
 		return lastOpenedProjectPath;
 	}
-
 
 	/**
 	 * Sets the Base Address
@@ -113,7 +110,6 @@ public class Settings {
 	    // Save document to disk
 	    Utilities.writeDocumentToFile(doc, new File(IDE.projectFolderPath + "\\ProjectSettings.xml"));
 	}
-
 
 	/**
 	 * Sets the last project opened (or created)

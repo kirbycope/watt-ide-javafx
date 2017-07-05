@@ -456,6 +456,9 @@ public class IdeController {
 		greatGrandParent.getChildren().remove(grandParent);
 	}
 
+	/**
+	 * Saves the Test Case of the Selected Tab
+	 */
 	public static void SaveTestCase(Tab selectedTab){
 		// Clear the console log
 		UiHelpers.GetConsoleTextAreaNode().clear();

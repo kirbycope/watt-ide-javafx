@@ -432,13 +432,12 @@ public class Utilities {
 				String dataExecute = row.attr("data-execute");
 				execute = Boolean.parseBoolean(dataExecute);
 				// Handle each <td> in the <tr>
-				for (int i = 0; i < row.childNodes().size(); i++)
+				for (int i = 0; i < row.children().size(); i++)
 				{
-					Node childNode = row.childNodes().get(i);
-
-					if (i == 1) { command = ((Element) childNode).text(); }
-					else if (i==3) { target = ((Element) childNode).text(); }
-					else if (i==5) { value = ((Element) childNode).text(); }
+					Element childNode = row.children().get(i);
+					if (i == 0) { command = childNode.text(); }
+					else if (i==1) { target = childNode.text(); }
+					else if (i==2) { value = childNode.text(); }
 				}
 				// Finally, Add the test step to the Test Steps Pane
 				IdeController.AddStep(execute, description, command, target, value, continueOnFailure);
