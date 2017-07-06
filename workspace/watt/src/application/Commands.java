@@ -25,8 +25,8 @@ public class Commands {
 	        ,"echo"
 	        ,"goBack"
 	        ,"goBackAndWait"
-	        ,"goForward"
-	        ,"goForwardAndWait"
+	        ,"goForward" // Not in Selenium IDE
+	        ,"goForwardAndWait" // Not in Selenium IDE
 	        ,"open"
 	        ,"pause"
 	        ,"refresh"

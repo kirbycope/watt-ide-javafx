@@ -32,8 +32,6 @@ import application.controllers.IdeController;
 import application.models.TestStep;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -242,6 +240,7 @@ public class Utilities {
 	/**
 	 * Creates a .java file by parsing the given .html file
 	 */
+	@SuppressWarnings("rawtypes")
 	public static void ExportHtmlToJava(String testCaseName, String destination) {
 		UiHelpers.WriteToIdeConsole("Creating .java file from Test Case... ");
 		try {
@@ -252,7 +251,9 @@ public class Utilities {
 			sb.append("package " + folderOfProject + ";" + System.lineSeparator());
 			sb.append(System.lineSeparator());
 			sb.append("import org.junit.*;" + System.lineSeparator());
+			//sb.append("import static org.junit.Assert.*;" + System.lineSeparator()); // Assert class
 			sb.append("import org.openqa.selenium.*;" + System.lineSeparator());
+			//sb.append("import org.openqa.selenium.support.ui.Select;" + System.lineSeparator()); // Selenium Support
 			sb.append("import " + folderOfProject + ".TestBase;" + System.lineSeparator());
 			sb.append(System.lineSeparator());
 			sb.append("public class " + testCaseName + " extends TestBase {" + System.lineSeparator());
@@ -260,6 +261,46 @@ public class Utilities {
 			sb.append("  public void " + testCaseName.toLowerCase() + "() throws Exception {" + System.lineSeparator());
 
 			// TODO: Parse the HTML and each test step
+			// Get the Test Steps
+			VBox testSteps = UiHelpers.GetCurrentTabTestStepsNode();
+			for (int i = 0; i < testSteps.getChildren().size(); i++) {
+				// Get the current Test Step
+				VBox currentTestStep = (VBox) testSteps.getChildren().get(i);
+
+				// Get the current Test Step's first row (Execute and Description)
+				HBox firstRow = (HBox) currentTestStep.getChildren().get(0);
+				// Get the first row's "Execute" CheckBox
+				CheckBox executeCheckbox = (CheckBox) firstRow.getChildren().get(0);
+				// Get the first row's "Description" TextField
+				TextField descriptionTextField = (TextField) firstRow.getChildren().get(1);
+
+				// Get each Test Step's second row (Command)
+				HBox secondRow = (HBox) currentTestStep.getChildren().get(1);
+				// Get the second row's "Command" ComboBox
+				ComboBox commandComboBox = (ComboBox) secondRow.getChildren().get(0);
+
+				// Get the current Test Step's third row (Target)
+				HBox thirdRow = (HBox) currentTestStep.getChildren().get(2);
+				// Get the third row's "Target" TextField
+				TextField targetTextField = (TextField) thirdRow.getChildren().get(0);
+
+				// Get the current Test Step's fourth row (Value)
+				HBox fourthRow = (HBox) currentTestStep.getChildren().get(3);
+				// Get the fourth row's "Value" TextField
+				TextField valueTextField = (TextField) fourthRow.getChildren().get(0);
+
+				// Create a new TestStep object
+				TestStep testStep = new TestStep();
+				testStep.ExecuteStep = executeCheckbox.isSelected();
+				testStep.Description = descriptionTextField.getText();;
+				testStep.Command = commandComboBox.getSelectionModel().getSelectedItem().toString();;
+				testStep.Target = targetTextField.getText();
+				testStep.Value = valueTextField.getText();
+
+				// Port Selenese to JUnit
+				sb.append(Converter.TestStepToJava(testStep));
+
+			}
 
 			sb.append("  }" + System.lineSeparator());
 			sb.append("}" + System.lineSeparator());
@@ -272,16 +313,6 @@ public class Utilities {
 			UiHelpers.WriteToIdeConsole("Failed!" + System.lineSeparator());
 			throw e;
 		}
-	}
-
-	/**
-	 * Gets the currently selected Tab
-	 */
-	public static Tab GetCurrentTab() {
-		// Get TabPane
-		TabPane tabPane = (TabPane) IDE.ideStage.getScene().lookup("#tab-pane");
-		// Get/Record the selected Tab
-		return tabPane.getSelectionModel().getSelectedItem();
 	}
 
 	/**

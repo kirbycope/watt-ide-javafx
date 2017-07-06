@@ -12,6 +12,9 @@ import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
@@ -28,6 +31,30 @@ public class UiHelpers {
 	 */
 	public static TextArea GetConsoleTextAreaNode() {
 		return (TextArea) IDE.ideStage.getScene().lookup("#console-text-area");
+	}
+
+	/**
+	 * Gets the currently selected Tab
+	 */
+	public static Tab GetCurrentTabNode() {
+		// Get TabPane
+		TabPane tabPane = (TabPane) IDE.ideStage.getScene().lookup("#tab-pane");
+		// Get/Record the selected Tab
+		return tabPane.getSelectionModel().getSelectedItem();
+	}
+
+	/**
+	 * Gets the VBox of the Test Steps for the current Tab
+	 */
+	public static VBox GetCurrentTabTestStepsNode() {
+		// Get the current tab node
+		Tab currentTab = GetCurrentTabNode();
+		// Get the VBox of the selected Tab's content
+		VBox content = (VBox) currentTab.getContent();
+		// Get the ScrollPane of the Tab
+		ScrollPane scrollPane = (ScrollPane) content.getChildren().get(0);
+		// Get the child VBox of the ScrollPane
+		return (VBox) scrollPane.getContent();
 	}
 
 	/**

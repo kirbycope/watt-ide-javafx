@@ -85,7 +85,7 @@ public class IdeController {
 	 */
 	public void Play(MouseEvent mouseEvent) {
 		// Get selected tab
-		Tab selectedTab = Utilities.GetCurrentTab();
+		Tab selectedTab = UiHelpers.GetCurrentTabNode();
 		// Ensure there is a selected Tab
 		if(selectedTab != null) {
 			// Save the current Test Case
@@ -106,7 +106,7 @@ public class IdeController {
 	 */
 	public void Save(MouseEvent mouseEvent) {
 		// Get selected tab
-		Tab selectedTab = Utilities.GetCurrentTab();
+		Tab selectedTab = UiHelpers.GetCurrentTabNode();
 		// Ensure there is a selected Tab
 		if(selectedTab != null) {
 			// Save the current Test Case
@@ -135,23 +135,13 @@ public class IdeController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void AddStep(boolean execute, String description, String command, String target, String value, boolean continueOnFailure) {
-		// Get the TabPane from the IDE stage
-		TabPane tabPane = (TabPane) IDE.ideStage.getScene().lookup("#tab-pane");
-		// Get the selected Tab
-		Tab tab = tabPane.getSelectionModel().getSelectedItem();
-		if (tab != null) {
-			// Get the VBox of the selected Tab's content
-			VBox content = (VBox) tab.getContent();
-			// Get the ScrollPane of the Tab
-			ScrollPane scrollPane = (ScrollPane) content.getChildren().get(0);
-			// Get the child VBox of the ScrollPane
-			VBox scrollPaneChildVBox = (VBox) scrollPane.getContent();
+		// Get the VBox containing all Test Steps
+		VBox testSteps = UiHelpers.GetCurrentTabTestStepsNode();
+		if (testSteps != null) {
 			// Create a VBox to hold the Test Step
 			VBox vbox = new VBox();
-			// Add the VBox to the ScrollPane's child VBox
-			scrollPaneChildVBox.getChildren().add(vbox);
-			// Set the ScrollPane's content to the new VBox
-			scrollPane.setContent(scrollPaneChildVBox);
+			// Add the VBox to the Test Steps VBox
+			testSteps.getChildren().add(vbox);
 			// Create a HBox to hold the first row
 			HBox firstRow = new HBox();
 			// Set the alignment of the HBox
@@ -464,7 +454,7 @@ public class IdeController {
 		UiHelpers.GetConsoleTextAreaNode().clear();
 		// Get the Tab's title
 		String testCaseName = selectedTab.getText().trim();
-		// TODO: Save the test case
+		// Save the test case of the current tab
 
 		// TODO: Convert the HTML file to a JAVA file
 		Utilities.ExportHtmlToJava(testCaseName, IDE.projectFolderPath + "\\" + testCaseName + ".java");
