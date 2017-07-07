@@ -106,13 +106,7 @@ public class Utilities {
 			sb.append(System.lineSeparator());
 			sb.append("public class TestBase {" + System.lineSeparator());
 			sb.append("	protected WebDriver driver;" + System.lineSeparator());
-			String baseAddress = Settings.GetBaseAddress();
-			if (baseAddress != null) {
-				sb.append("	protected String baseUrl = \"" + baseAddress + "\";" + System.lineSeparator());
-			}
-			else {
-				sb.append("	protected String baseUrl = \"http://timothycope.com/\";" + System.lineSeparator());
-			}
+			sb.append("	protected String baseUrl = \"" + Settings.GetBaseAddress() + "\";" + System.lineSeparator());
 			sb.append(System.lineSeparator());
 			sb.append("	@Before" + System.lineSeparator());
 			sb.append("	public void setUp() throws Exception {" + System.lineSeparator());
@@ -123,6 +117,16 @@ public class Utilities {
 			sb.append("	@After" + System.lineSeparator());
 			sb.append("	public void tearDown() throws Exception {" + System.lineSeparator());
 			sb.append("		driver.quit();" + System.lineSeparator());
+			sb.append("	}" + System.lineSeparator());
+			sb.append(System.lineSeparator());
+			sb.append("	public boolean isElementPresent(By by) {" + System.lineSeparator());
+			sb.append("		try {" + System.lineSeparator());
+			sb.append("			driver.findElement(by);" + System.lineSeparator());
+			sb.append("			return true;" + System.lineSeparator());
+			sb.append("		}" + System.lineSeparator());
+			sb.append("		catch (NoSuchElementException e) {" + System.lineSeparator());
+			sb.append("			return false;" + System.lineSeparator());
+			sb.append("		}" + System.lineSeparator());
 			sb.append("	}" + System.lineSeparator());
 			sb.append("}" + System.lineSeparator());
 			sb.append(System.lineSeparator());
@@ -250,10 +254,12 @@ public class Utilities {
 			StringBuilder sb = new StringBuilder();
 			sb.append("package " + folderOfProject + ";" + System.lineSeparator());
 			sb.append(System.lineSeparator());
+			sb.append("import static org.junit.Assert.*;" + System.lineSeparator());
+			sb.append(System.lineSeparator());
 			sb.append("import org.junit.*;" + System.lineSeparator());
-			//sb.append("import static org.junit.Assert.*;" + System.lineSeparator()); // Assert class
+
 			sb.append("import org.openqa.selenium.*;" + System.lineSeparator());
-			//sb.append("import org.openqa.selenium.support.ui.Select;" + System.lineSeparator()); // Selenium Support
+			sb.append("import org.openqa.selenium.support.ui.Select;" + System.lineSeparator());
 			sb.append("import " + folderOfProject + ".TestBase;" + System.lineSeparator());
 			sb.append(System.lineSeparator());
 			sb.append("public class " + testCaseName + " extends TestBase {" + System.lineSeparator());
@@ -440,7 +446,7 @@ public class Utilities {
 			rows.remove(0);
 			for (Element row : rows)
 			{
-				boolean execute;
+				boolean execute = true;
 				String description = "";
 				String command = "";
 				String target = "";
@@ -461,7 +467,9 @@ public class Utilities {
 				String dataContinueOnFailure = row.attr("data-continueOnFailure");
 				continueOnFailure = Boolean.parseBoolean(dataContinueOnFailure);
 				String dataExecute = row.attr("data-execute");
-				execute = Boolean.parseBoolean(dataExecute);
+				if (dataExecute.length() > 0){
+					execute = Boolean.parseBoolean(dataExecute);
+				}
 				// Handle each <td> in the <tr>
 				for (int i = 0; i < row.children().size(); i++)
 				{

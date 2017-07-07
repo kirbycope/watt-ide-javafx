@@ -123,16 +123,16 @@ public class Main extends Application {
 			CopyDependency("/lib/junit-4.12.jar", junit);
 		}
 		// Selenium
-		String selenium = rootPath + "WATT" + "\\client-combined-3.0.1-nodeps.jar";
+		String selenium = rootPath + "WATT" + "\\client-combined-3.4.0-nodeps.jar";
 		f = new File(selenium);
 		if (f.exists() == false){
-			CopyDependency("/lib/client-combined-3.0.1-nodeps.jar", selenium);
+			CopyDependency("/lib/client-combined-3.4.0-nodeps.jar", selenium);
 		}
 		// Selenium Server
-		String seleniumServer = rootPath + "WATT" + "\\selenium-server-standalone-3.0.1.jar";
+		String seleniumServer = rootPath + "WATT" + "\\selenium-server-standalone-3.4.0.jar";
 		f = new File(seleniumServer);
 		if (f.exists() == false){
-			CopyDependency("/lib/selenium-server-standalone-3.0.1.jar", seleniumServer);
+			CopyDependency("/lib/selenium-server-standalone-3.4.0.jar", seleniumServer);
 		}
 	}
 

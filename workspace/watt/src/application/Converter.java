@@ -3,165 +3,155 @@ package application;
 import application.models.TestStep;
 
 public class Converter {
-	public static String TestStepToJava(TestStep testStep){
-		String code = null;
 
+	public static String TestStepToJava(TestStep testStep){
+		String baseUrl = Settings.GetBaseAddress();
+		String code = null;
 		// Add Description to exported file
 		if (testStep.Description.length() > 0) {
-			code = "    // " + testStep.Description;
+			code = "    // " + testStep.Description + System.lineSeparator();
 		}
-
 		// Command: click and clickAndWait
 		if ( (testStep.Command =="click") || (testStep.Command =="clickAndWait") ) {
 			// Get findElement(By) selector
 			String target = FindElementSelector(testStep.Target);
 			// Assemble the code
-			code = "    driver.findElement(" + target +  ").click();";
-		}
-		// Command: clickAndWait
-		if (testStep.Command =="click") {
-			// Get findElement(By) selector
-			String target = FindElementSelector(testStep.Target);
-			// Assemble the code
-			code = "    driver.findElement(" + target +  ").click();";
+			code = code + "    driver.findElement(" + target +  ").click();";
 		}
 		// Command: deleteAllVisibleCookies
-		if (testStep.Command == "deleteAllVisibleCookies") {
-			code = "    driver.manage().deleteAllCookies();";
+		else if (testStep.Command == "deleteAllVisibleCookies") {
+			code = code + "    driver.manage().deleteAllCookies();";
 		}
 		// Command: echo
-		if (testStep.Command == "echo") {
-			code = "    System.out.println(" + testStep.Target + ")";
+		else if (testStep.Command == "echo") {
+			code = code + "    System.out.println(\"" + testStep.Target + "\");";
 		}
 		// Command: goBack and goBackAndWait
-		if ( (testStep.Command == "goBack") || (testStep.Command == "goBackAndWait") ) {
-			code = "    driver.navigate().back();";
+		else if ( (testStep.Command == "goBack") || (testStep.Command == "goBackAndWait") ) {
+			code = code + "    driver.navigate().back();";
 		}
 		// Command: goForward and goForwardAndWait
-		if ( (testStep.Command == "goForward") || (testStep.Command == "goForward") ) {
-			code = "    driver.navigate().forward();";
+		else if ( (testStep.Command == "goForward") || (testStep.Command == "goForward") ) {
+			code = code + "    driver.navigate().forward();";
 		}
 		// Command: open
-		if (testStep.Command == "open") {
-			// TODO: BaseURL
-			// Assemble the code
-			code = "    driver.url = \"" + testStep.Target + "\";";
+		else if (testStep.Command == "open") {
+			code = code + "    driver.get(\"" + baseUrl + testStep.Target + "\");";
 		}
 		// Command: pause
-		if (testStep.Command == "pause") {
-			code = "    Thread.Sleep(" + testStep.Target + ")";
+		else if (testStep.Command == "pause") {
+			code = code + "    Thread.sleep(" + testStep.Target + ");";
 		}
 		// Command: refresh and refreshAndWait
-		if ( (testStep.Command == "refresh") || (testStep.Command == "refreshAndWait") ) {
-			code = "    driver.navigate().refresh();";
+		else if ( (testStep.Command == "refresh") || (testStep.Command == "refreshAndWait") ) {
+			code = code + "    driver.navigate().refresh();";
 		}
 		// Command: runScript
-		if (testStep.Command == "runScript") {
-			code = "    (JavascriptExecutor) driver.executeScript(" + testStep.Target +")";
+		else if (testStep.Command == "runScript") {
+			code = code + "    ((JavascriptExecutor) driver).executeScript(\"" + testStep.Target +"\");";
 		}
 		// Command: select
-		if (testStep.Command == "select") {
+		else if (testStep.Command == "select") {
 			// Get findElement(By) selector
 			String target = FindElementSelector(testStep.Target);
 			// Assemble the code
-			code = "    new Select(driver.findElement(" + target + ")";
+			code = code + "    new Select(driver.findElement(" + target + "))";
 			// Select by Index
 			if (testStep.Value.startsWith("index=")) {
-				code = code + ".selectByIndex" + testStep.Value.substring(6) + ")";
+				code = code + ".selectByIndex(\"" + testStep.Value.substring(6) + "\");";
 			}
 			// Select by Label (Visible Text)
-			if (testStep.Value.startsWith("label=")) {
-				code = code + ".selectByVisibleText(" + testStep.Value.substring(6) + ")";
+			else if (testStep.Value.startsWith("label=")) {
+				code = code + ".selectByVisibleText(\"" + testStep.Value.substring(6) + "\");";
 			}
 			// Select by Value
-			if (testStep.Value.startsWith("value=")) {
-				code = code + ".selectByValue(" + testStep.Value.substring(6) + ")";
+			else if (testStep.Value.startsWith("value=")) {
+				code = code + ".selectByValue(\"" + testStep.Value.substring(6) + "\");";
 			}
 		}
 		// Command: store
-		if (testStep.Command == "store") {
-			code = "    " + testStep.Value + " = " + testStep.Target + ";";
+		else if (testStep.Command == "store") {
+			code = code + "    String " + testStep.Value + " = \"" + testStep.Target + "\";";
 		}
 		// Command: submit and submitAndWait
-		if ( (testStep.Command == "submit") || (testStep.Command == "submitAndWait") ) {
+		else if ( (testStep.Command == "submit") || (testStep.Command == "submitAndWait") ) {
 			// Get findElement(By) selector
 			String target = FindElementSelector(testStep.Target);
 			// Assemble the code
-			code = "    driver.findElement(" + target +  ").submit();";
+			code = code + "    driver.findElement(" + target +  ").submit();";
 		}
 		// Command: type
-		if (testStep.Command == "type") {
+		else if (testStep.Command == "type") {
 			// Get findElement(By) selector
 			String target = FindElementSelector(testStep.Target);
 			// Assemble the code
-			code = "    driver.findElement(" + target +  ").sendKeys(" + testStep.Value + ");";
+			code = code + "    driver.findElement(" + target +  ").sendKeys(\"" + testStep.Value + "\");";
 		}
 		// Command: verifyChecked
-		if (testStep.Command == "verifyChecked") {
+		else if (testStep.Command == "verifyChecked") {
 			// Get findElement(By) selector
 			String target = FindElementSelector(testStep.Target);
 			// Assemble the code
-			code = "    assertTrue(driver.findElement(" + target + ").isSelected());";
+			code = code + "    assertTrue(driver.findElement(" + target + ").isSelected());";
 		}
 		// Command: verifyElementNotPresent
-		if (testStep.Command == "verifyElementNotPresent") {
+		else if (testStep.Command == "verifyElementNotPresent") {
 			// Get findElement(By) selector
 			String target = FindElementSelector(testStep.Target);
 			// Assemble the code
-			code = "    assertFalse(isElementPresent(" + target + "));";
+			code = code + "    assertFalse(isElementPresent(" + target + "));";
 		}
 		// Command: verifyElementPresent
-		if (testStep.Command == "verifyElementPresent") {
+		else if (testStep.Command == "verifyElementPresent") {
 			// Get findElement(By) selector
 			String target = FindElementSelector(testStep.Target);
 			// Assemble the code
-			code = "    assertTrue(isElementPresent(" + target + "));";
+			code = code + "    assertTrue(isElementPresent(" + target + "));";
 		}
 		// Command: verifyLocation
-		if (testStep.Command == "verifyLocation") {
-			code = "    assertEquals(" + testStep.Target + ", driver.url;)"; // TODO: Handle BaseUrl
+		else if (testStep.Command == "verifyLocation") {
+			code = code + "    assertEquals(\"" + baseUrl + testStep.Target + "\", driver.getCurrentUrl());";
 		}
 		// Command: verifyNotChecked
-		if (testStep.Command == "verifyNotChecked") {
+		else if (testStep.Command == "verifyNotChecked") {
 			// Get findElement(By) selector
 			String target = FindElementSelector(testStep.Target);
 			// Assemble the code
-			code = "    assertFalse(driver.findElement(" + target + ").isSelected());";
+			code = code + "    assertFalse(driver.findElement(" + target + ").isSelected());";
 		}
 		// Command: verifyTable
-		if (testStep.Command == "verifyTable") {
+		else if (testStep.Command == "verifyTable") {
 			// TODO
 		}
 		// Command: verifyText
-		if (testStep.Command == "verifyText") {
+		else if (testStep.Command == "verifyText") {
 			// Get findElement(By) selector
 			String target = FindElementSelector(testStep.Target);
 			// Assemble the code
-			code = "    assertEquals(" + testStep.Target + ", driver.findElement(" + target + ").getText());";
+			code = code + "    assertEquals(\"" + testStep.Value + "\", driver.findElement(" + target + ").getText());";
 		}
 		// Command: verifyTitle
-		if (testStep.Command == "verifyTitle") {
-			code = "    assertEquals(" + testStep.Target + ", driver.getTitle();)";
+		else if (testStep.Command == "verifyTitle") {
+			code = code + "    assertEquals(\"" + testStep.Target + "\", driver.getTitle());";
 		}
 		// Command: verifyValue
-		if (testStep.Command == "verifyValue") {
+		else if (testStep.Command == "verifyValue") {
 			// Get findElement(By) selector
 			String target = FindElementSelector(testStep.Target);
 			// Assemble the code
-			code = "    assertEquals(" + testStep.Value + ", driver.findElement(" + target + ").getAttribute(\"value\"));";
+			code = code + "    assertEquals(\"" + testStep.Value + "\", driver.findElement(" + target + ").getAttribute(\"value\"));";
 		}
 		// Command: waitForLocation
-		if (testStep.Command == "waitForLocation") {
-			       code = "    for (int second = 0;; second++) {";
-			code = code + "      if (second >= 60) fail(\"timeout\");";
-			code = code + "      try { if (" + testStep.Target + ".equals(driver.url)) break; }";
-			code = code + "      catch (Exception e) { /* do nothing */ }";
-			code = code + "      Thread.sleep(1000);";
+		else if (testStep.Command == "waitForLocation") {
+			code = code + "    for (int second = 0;; second++) {" + System.lineSeparator();
+			code = code + "      if (second >= 60) fail(\"timeout\");" + System.lineSeparator();
+			code = code + "      try { if (driver.getCurrentUrl().equals(\"" + baseUrl + testStep.Target + "\")) break; }" + System.lineSeparator();
+			code = code + "      catch (Exception e) { /* do nothing */ }" + System.lineSeparator();
+			code = code + "      Thread.sleep(1000);" + System.lineSeparator();
 			code = code + "    }";
 		}
-
 		// Return the code
-		return code  + System.lineSeparator();
+		return code + System.lineSeparator();
 	}
 
 	private static String FindElementSelector(String target) {

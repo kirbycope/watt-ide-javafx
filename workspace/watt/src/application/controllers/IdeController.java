@@ -454,9 +454,7 @@ public class IdeController {
 		UiHelpers.GetConsoleTextAreaNode().clear();
 		// Get the Tab's title
 		String testCaseName = selectedTab.getText().trim();
-		// Save the test case of the current tab
-
-		// TODO: Convert the HTML file to a JAVA file
+		// Convert the HTML file to a JAVA file
 		Utilities.ExportHtmlToJava(testCaseName, IDE.projectFolderPath + "\\" + testCaseName + ".java");
 		// Create a copy of TestBase.java
 		Utilities.CreateCopyOfTestBase(IDE.projectFolderPath + "\\TestBase.java");
