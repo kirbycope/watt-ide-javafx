@@ -207,7 +207,7 @@ public class Utilities {
 	 * Shows the file chooser for where to save the new test
 	 */
 	public static void CreateNewTestStep() {
-		System.out.println("New Test Case selected..."); // DEBUGGING
+		//System.out.println("New Test Case selected..."); // DEBUGGING
         // Show File Chooser
         String filePath = Utilities.ShowHtmlFileChooser(IDE.ideStage);
         // With result (String) create the Node in XML to match the file system

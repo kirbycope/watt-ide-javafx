@@ -20,7 +20,7 @@
    <children>
       <HBox styleClass="toolbar-parent">
          <children>
-            <Label styleClass="toolbar-label" text="🗋">
+            <Label id="toolbar-new" onMouseClicked="#New" styleClass="toolbar-label" text="🗋">
                <tooltip>
                   <Tooltip text="New" />
                </tooltip>

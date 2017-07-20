@@ -72,7 +72,7 @@ public class Main extends Application {
 	}
 
 	/**
-	 * Adds recent projects to the main menu
+	 * Adds recent projects to the main menu (last opened will always be on top)
 	 */
 	public static void AddRecentProjects(Stage primaryStage) {
 		// Get the Recent Projects container
@@ -97,8 +97,36 @@ public class Main extends Application {
         });
 		// Add the project to the container
 		vbRecentProjects.getChildren().add(labelLastProject);
-
-		// TODO: Add more 'recent' projects
+		// Add more 'recent' projects
+		String recentProjects = Settings.GetPreviousProjects();
+		// Remove the lastProject from the list
+		if (recentProjects.contains(lastProject)) {
+			recentProjects = recentProjects.replace(lastProject, "");
+			recentProjects = recentProjects.replace(",,", ",");
+		}
+		// Split the recentProjects by ","
+		String[] list = recentProjects.split(",");
+		// Add each item in the list
+		for (String previousProject : list) {
+			// Truncate if needed
+			String labelText2 = previousProject;
+			if (labelText2.length() > 40) {
+				labelText2 = labelText2.substring(0, 37) + "...";
+			}
+			// Create a Label
+			Label labelPreviousProject = new Label(labelText2);
+			labelPreviousProject.setTooltip(new Tooltip(previousProject));
+			labelPreviousProject.getStyleClass().add("label-item");
+			labelPreviousProject.setOnMouseClicked(new EventHandler<MouseEvent>()
+	        {
+	            @Override
+	            public void handle(MouseEvent e) {
+	                MainController.loadProject(primaryStage, previousProject);
+	            }
+	        });
+			// Add the project to the container
+			vbRecentProjects.getChildren().add(labelPreviousProject);
+		}
 	}
 
 	/**

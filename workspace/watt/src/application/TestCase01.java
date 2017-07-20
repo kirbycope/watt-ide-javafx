@@ -36,7 +36,8 @@ public class TestCase01 extends TestBase {
 	    // Command: select
 	    new Select(driver.findElement(By.id("cars"))).selectByVisibleText("Audi");
 	    // Command: store
-	    String variableName = "expression";
+	    @SuppressWarnings("unused")
+		String variableName = "expression";
 	    // Command: submit
 	    driver.findElement(By.id("NameForm")).submit();
 	    // Command: submitAndWait

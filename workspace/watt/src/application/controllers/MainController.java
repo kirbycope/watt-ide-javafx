@@ -2,6 +2,9 @@ package application.controllers;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.swing.JOptionPane;
+
 import application.IDE;
 import application.Main;
 import application.Settings;
@@ -64,19 +67,34 @@ public class MainController {
 	 * Load the Project into the IDE Stage
 	 */
 	public static void loadProject(Stage mainStage, String filePath) {
-		// Set the last opened project
-		Settings.SetLastOpenedProject(filePath);
-		// Open IDE window
-		try {
-			// Initialize the IDE stage
-			IDE.initIdeLayout();
-			// Close Main stage
-	        mainStage.close();
+		// Check if file exists
+		File file = new File(filePath);
+		if (file.exists()) {
+			// Set the last opened project
+			Settings.SetLastOpenedProject(filePath);
+			// Open IDE window
+			try {
+				// Initialize the IDE stage
+				IDE.initIdeLayout();
+				// Close Main stage
+		        mainStage.close();
+			}
+			catch (IOException e) { e.printStackTrace(); }
+			// Store the project folder path
+			IDE.projectFolderPath = filePath.replace("\\ProjectSettings.xml", "");
+			// Update the TreeView
+			UiHelpers.UpdateTreeView();
 		}
-		catch (IOException e) { e.printStackTrace(); }
-		// Store the project folder path
-		IDE.projectFolderPath = filePath.replace("\\ProjectSettings.xml", "");
-		// Update the TreeView
-		UiHelpers.UpdateTreeView();
+		else {
+			// Alert user
+			String title = "Project Not Found";
+			String message = "The project you selected could not be found." + System.lineSeparator() + "Would you like to remove the reference?";
+			int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+			if (reply == JOptionPane.YES_OPTION) {
+				// TODO: Remove reference from Settings.XML and refresh the UI
+				Settings.RemoveProjectFromPreviousProjects(filePath);
+				// TODO: Refresh the UI
+	        }
+		}
 	}
 }

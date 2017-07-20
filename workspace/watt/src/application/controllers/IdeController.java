@@ -80,6 +80,10 @@ public class IdeController {
 		}
 	}
 
+	public void New(MouseEvent mouseEvent) {
+		Utilities.CreateNewTestStep();
+	}
+
 	/**
 	 * Plays the current Tab's test case
 	 */
@@ -96,6 +100,8 @@ public class IdeController {
 			Utilities.RunCommand(IDE.projectFolderPath + "\\run-script.bat");
 		}
 		else {
+			// Clear the "console"
+			UiHelpers.GetConsoleTextAreaNode().clear();
 			// Write message to the "console"
 			UiHelpers.WriteToIdeConsole("No Test Case (Tab) open");
 		}
@@ -113,6 +119,8 @@ public class IdeController {
 			SaveTestCase(selectedTab);
 		}
 		else {
+			// Clear the "console"
+			UiHelpers.GetConsoleTextAreaNode().clear();
 			// Write message to the "console"
 			UiHelpers.WriteToIdeConsole("No Test Case (Tab) open");
 		}
