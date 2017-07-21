@@ -91,9 +91,10 @@ public class MainController {
 			String message = "The project you selected could not be found." + System.lineSeparator() + "Would you like to remove the reference?";
 			int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
 			if (reply == JOptionPane.YES_OPTION) {
-				// TODO: Remove reference from Settings.XML and refresh the UI
+				// Remove reference from Settings.XML and refresh the UI
 				Settings.RemoveProjectFromPreviousProjects(filePath);
-				// TODO: Refresh the UI
+				// Refresh the UI
+				UiHelpers.RefreshRecentProjects();
 	        }
 		}
 	}

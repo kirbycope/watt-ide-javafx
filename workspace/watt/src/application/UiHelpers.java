@@ -7,8 +7,10 @@ import application.controllers.IdeController;
 import application.models.TreeCellImpl;
 import application.models.TreeItemFile;
 import application.models.TreeItemFolder;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -129,6 +131,23 @@ public class UiHelpers {
 		});
 		contextMenu.getItems().add(mi2);
 		return contextMenu;
+	}
+
+	/**
+	 * Removes all recent projects and re-adds them
+	 */
+	public static void RefreshRecentProjects() {
+		// Get the Recent Projects container
+		VBox vbRecentProjects = (VBox) Main.mainStage.getScene().lookup("#recent-projects");
+		// Get the recent projects
+		ObservableList<Node> children = vbRecentProjects.getChildren();
+		// Remove all except the first (Header)
+		while (children.size() > 1) {
+			children.remove(1);
+			children = vbRecentProjects.getChildren();
+		}
+		// Re-add projects
+		Main.AddRecentProjects(Main.mainStage);
 	}
 
 	/**

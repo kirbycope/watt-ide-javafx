@@ -102,11 +102,72 @@ public class Settings {
 		return previousProjects;
 	}
 
+	/**
+	 * Removes the given project from the previousProjects
+	 * @param projectToRemove
+	 */
 	public static void RemoveProjectFromPreviousProjects(String projectToRemove) {
 		// Get the <root> element of the Document
 		org.w3c.dom.Element root = applicationSettingsFile.getDocumentElement();
 
-		// TODO
+		// Handle the "previousProject"
+		Node previousLastProject = null;
+		String previousLastProjectValue = null;
+		try {
+			// Get the previous last opened project
+			previousLastProject = root.getElementsByTagName("lastProject").item(0);
+			// Get the previous last opened project's value
+			previousLastProjectValue = previousLastProject.getAttributes().getNamedItem("value").getNodeValue();
+			// Remove the previous last opened project
+			root.removeChild(previousLastProject);
+		}
+		catch (Exception e) { /* do nothing */ }
+		// Create a child node of root: <lastProject value="{path}">
+		org.w3c.dom.Element lastProjectNode = applicationSettingsFile.createElement("lastProject");
+		if (previousLastProjectValue == projectToRemove) {
+			lastProjectNode.setAttribute("value", "");
+		}
+		else {
+			lastProjectNode.setAttribute("value", previousLastProjectValue);
+		}
+		// Add the node to the root element
+	    root.appendChild(lastProjectNode);
+
+		// Handle the "previousProjects"
+		Node previousProjects = null;
+	    String previousProjectsValue = null;
+		try {
+			// Get the previous projects
+	    	previousProjects = root.getElementsByTagName("previousProjects").item(0);
+	    	// Get the previous projects' value
+	    	previousProjectsValue = previousProjects.getAttributes().getNamedItem("value").getNodeValue();
+	    	// Remove the previous last projects
+	    	root.removeChild(previousProjects);
+		}
+		catch (Exception e) { /* do nothing*/ }
+		// Remove the projectToRemove from previousProjectsValue
+		if (previousProjectsValue != null) {
+			if (previousProjectsValue.contains(projectToRemove)) {
+				previousProjectsValue = previousProjectsValue.replace(projectToRemove, "");
+				previousProjectsValue = previousProjectsValue.replace(",,", ",");
+			}
+			// Remove any leading commas
+        	if (previousProjectsValue.startsWith(",")) {
+    			previousProjectsValue = previousProjectsValue.substring(1);
+    		}
+        	// Remove any trailing commas
+        	if (previousProjectsValue.endsWith(",")) {
+        		previousProjectsValue = previousProjectsValue.substring(0, previousProjectsValue.length()-1);
+        	}
+		}
+		// Create a child node of root: <lastProject value="{path},{path},etc">
+    	org.w3c.dom.Element previousProjectsNode = applicationSettingsFile.createElement("previousProjects");
+    	previousProjectsNode.setAttribute("value", previousProjectsValue);
+    	// Add the node to the root element
+	    root.appendChild(previousProjectsNode);
+
+		// Save document to disk
+	    Utilities.writeDocumentToFile(applicationSettingsFile, new File(applicationSettingsFilePath));
 	}
 
 	/**
@@ -181,11 +242,11 @@ public class Settings {
     			previousProjectsValue = previousProjectsValue.replace(path, "");
     			previousProjectsValue = previousProjectsValue.replace(",,", ",");
     		}
+    		// Remove any leading commas
+        	if (previousProjectsValue.startsWith(",")) {
+    			previousProjectsValue = previousProjectsValue.substring(1);
+    		}
     	}
-    	// Remove any leading commas
-    	if (previousProjectsValue.startsWith(",")) {
-			previousProjectsValue = previousProjectsValue.substring(1);
-		}
     	// Create a child node of root: <lastProject value="{path},{path},etc">
     	org.w3c.dom.Element previousProjectsNode = applicationSettingsFile.createElement("previousProjects");
     	previousProjectsNode.setAttribute("value", previousProjectsValue);
